@@ -22,8 +22,13 @@
                 <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarMobileDropdown">
                     <ul class="navbar-nav">
+                        {% if session['_id'] %}
+                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('profile')}}" class="nav-link">My Profile</a></li>
+                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
+                        {% else %}
                         <li class="nav-item mr-3 d-md-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
                         <li class="nav-item mr-3 d-md-none"><a href="{{url_for('signup')}}" class="nav-link">Signup</a></li>
+                        {% endif %}
                         <li class="nav-item mr-3"><a href="{{url_for('about_us')}}" class="nav-link">About us</a></li>
                         <li class="nav-item mr-3"><a href="{{url_for('vacancies')}}" class="nav-link">Vacancies</a></li>
                         <li class="nav-item mr-3"><a href="{{url_for('employees')}}" class="nav-link">Employees</a></li>
@@ -32,7 +37,11 @@
                     </ul>
                 </div>
                 <div class="d-none d-md-block">
+                    {% if session['_id'] %}
+                    <span class="nav-link pr-0"><a href="{{url_for('profile')}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
+                    {% else %}
                     <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
+                    {% endif %}
                 </div>
             </nav>
         </div>

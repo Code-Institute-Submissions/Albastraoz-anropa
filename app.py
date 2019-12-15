@@ -1,12 +1,14 @@
 import os
 from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 import bcrypt
 
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'anropa'
 app.config["MONGO_URI"] = 'mongodb://127.0.0.1:27017/anropa'
+app.secret_key = 'mysecret'
 
 mongo = PyMongo(app)
 
@@ -14,8 +16,6 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def home():
-    if 'email' in session:
-        return 'You are logged in as ' + session['email']
     return render_template("index.html")
 
 @app.route('/about_us')
@@ -38,6 +38,13 @@ def employers():
 def contact():
     return render_template("contact.html")
 
+@app.route('/profile')
+def profile():
+    if session.get('_id') is not None:
+        return render_template("profile.html")
+    else:
+        return redirect(url_for('home'))
+
 # AUTH
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -48,8 +55,10 @@ def login():
 
         if user_login:
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
-                session['email'] = request.form['email']
-                return redirect(url_for('home'))
+                session['_id'] = str(user_login['_id'])
+                session['name'] = user_login['name']
+                session['email'] = user_login['email']
+                return redirect(url_for('profile'))
         flash('Invalid username/password combination')
 
     return render_template("login.html")
@@ -63,8 +72,9 @@ def signup():
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass})
-            session['email'] = request.form['email']
-            return redirect(url_for('home'))
+            registered_user = users.find_one({'email' : request.form['email']})
+            session['_id'] = str(registered_user['_id'])
+            return redirect(url_for('profile'))
         
         flash('That email already exists!')
 
@@ -72,7 +82,9 @@ def signup():
 
 @app.route('/logout')
 def logout():
+    session.pop('_id', None)
+    session.pop('name', None)
+    session.pop('email', None)
     return redirect(url_for('home'))
 
-app.secret_key = 'mysecret'
 app.run(debug=True)
