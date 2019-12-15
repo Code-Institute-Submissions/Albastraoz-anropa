@@ -43,19 +43,26 @@ def profile():
     if session.get('_id') is not None:
         if request.method == 'POST':
             users = mongo.db.users
-            users.update({'_id' : ObjectId(session['_id'])}, {"$set":
+            cv_file = request.files['cv_file']
+            mongo.save_file(cv_file.filename, cv_file)
+            users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                 {'name' : request.form['name'], 
-                'email' : session['email'],
                 'address' : request.form['address'], 
                 'city' : request.form['city'], 
-                'zipcode' : request.form['zipcode'], 
-                'current_job' : request.form['current_job']
+                'zipcode' : request.form['zipcode'],
+                'country' : request.form['country'],  
+                'current_job' : request.form['current_job'],
+                'cv_file' : cv_file.filename
             }})
             flash('Your information has been updated succesfully!')
 
         return render_template("profile.html", user=mongo.db.users.find_one({'_id': ObjectId(session['_id'])}))
     else:
         return redirect(url_for('home'))
+
+@app.route('/file/<filename>')
+def file(filename):
+    return mongo.send_file(filename)
 
 # AUTH
 
