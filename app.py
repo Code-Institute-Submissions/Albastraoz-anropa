@@ -38,10 +38,22 @@ def employers():
 def contact():
     return render_template("contact.html")
 
-@app.route('/profile')
+@app.route('/profile', methods=['POST', 'GET'])
 def profile():
     if session.get('_id') is not None:
-        return render_template("profile.html")
+        if request.method == 'POST':
+            users = mongo.db.users
+            users.update({'_id' : ObjectId(session['_id'])}, {"$set":
+                {'name' : request.form['name'], 
+                'email' : session['email'],
+                'address' : request.form['address'], 
+                'city' : request.form['city'], 
+                'zipcode' : request.form['zipcode'], 
+                'current_job' : request.form['current_job']
+            }})
+            flash('Your information has been updated succesfully!')
+
+        return render_template("profile.html", user=mongo.db.users.find_one({'_id': ObjectId(session['_id'])}))
     else:
         return redirect(url_for('home'))
 
@@ -74,6 +86,8 @@ def signup():
             users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass})
             registered_user = users.find_one({'email' : request.form['email']})
             session['_id'] = str(registered_user['_id'])
+            session['name'] = registered_user['name']
+            session['email'] = registered_user['email']
             return redirect(url_for('profile'))
         
         flash('That email already exists!')
