@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, session, request, url_for
+from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_pymongo import PyMongo
 import bcrypt
 
@@ -14,8 +14,8 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def home():
-    if 'name' in session:
-        return 'You are logged in as' + session['name']
+    if 'email' in session:
+        return 'You are logged in as ' + session['email']
     return render_template("index.html")
 
 @app.route('/about_us')
@@ -40,17 +40,19 @@ def contact():
 
 # AUTH
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
+    if request.method == 'POST':
+        users = mongo.db.users
+        user_login = users.find_one({'email' : request.form['email']})
+
+        if user_login:
+            if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
+                session['email'] = request.form['email']
+                return redirect(url_for('home'))
+        flash('Invalid username/password combination')
+
     return render_template("login.html")
-
-#@app.rout('/login', methods=['POST'])
-#def login_post():
-    #return
-
-#@app.route('/signup')
-#def signup():
-    #return render_template("signup.html")
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -61,10 +63,10 @@ def signup():
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass})
-            session['name'] = request.form['name']
+            session['email'] = request.form['email']
             return redirect(url_for('home'))
         
-        return 'That username already exists!'
+        flash('That email already exists!')
 
     return render_template("signup.html")
 

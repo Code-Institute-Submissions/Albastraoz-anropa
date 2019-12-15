@@ -5,6 +5,13 @@
             <h1>SIGNUP</h1>
         </div>
         <div class="col-12">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+            {% endwith %}
             <form method=POST action="{{ url_for('signup')}}">
                 <div class="form-group">
                     <label for="name">Name</label>
