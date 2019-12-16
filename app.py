@@ -38,34 +38,58 @@ def employers():
 def contact():
     return render_template("contact.html")
 
-@app.route('/profile', methods=['POST', 'GET'])
+# Account functionality
+@app.route('/profile')
 def profile():
     if session.get('_id') is not None:
-        if request.method == 'POST':
-            users = mongo.db.users
-            cv_file = request.files['cv_file']
-            mongo.save_file(cv_file.filename, cv_file)
-            users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-                {'name' : request.form['name'], 
-                'address' : request.form['address'], 
-                'city' : request.form['city'], 
-                'zipcode' : request.form['zipcode'],
-                'country' : request.form['country'],  
-                'current_job' : request.form['current_job'],
-                'cv_file' : cv_file.filename
-            }})
-            flash('Your information has been updated succesfully!')
-
-        return render_template("profile.html", user=mongo.db.users.find_one({'_id': ObjectId(session['_id'])}))
+        one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+        users = mongo.db.users
+        if users.admin:
+            all_vacancies = mongo.db.vacancies.find()
+            return render_template("profile.html", user=one_user, vacancies=all_vacancies)
+        return render_template("profile.html", user=one_user)
     else:
         return redirect(url_for('home'))
+
+@app.route('/profile_update', methods=['POST'])
+def profile_update():
+    users = mongo.db.users
+    users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+        {'name' : request.form['name'], 
+        'address' : request.form['address'], 
+        'city' : request.form['city'], 
+        'zipcode' : request.form['zipcode'],
+        'country' : request.form['country']
+    }})
+    flash('Your information has been updated succesfully!')
+    return redirect(url_for('profile'))
+
+@app.route('/cv_update', methods=['POST'])
+def cv_update():
+    users = mongo.db.users
+    cv_file = request.files['cv_file']
+    mongo.save_file(cv_file.filename, cv_file)
+    users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+        {'current_job' : request.form['current_job'],
+        'cv_file' : cv_file.filename
+    }})
+    flash('Your information has been updated succesfully!')
+    return redirect(url_for('profile'))
 
 @app.route('/file/<filename>')
 def file(filename):
     return mongo.send_file(filename)
 
-# AUTH
+# Admin area
 
+@app.route('/add_vacancy', methods=['POST'])
+def add_vacancy():
+    vacancy = mongo.db.vacancies
+    vacancy.insert({'vacancy_title' : request.form['add_vacancy_title'], 'vacancy_description' : request.form['add_vacancy_description']})
+    flash('Vacancy added to the database!')
+    return redirect(url_for('profile'))
+
+# AUTH
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
