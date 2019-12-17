@@ -7,7 +7,7 @@ import bcrypt
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'anropa'
-app.config["MONGO_URI"] = 'mongodb://127.0.0.1:27017/anropa'
+app.config["MONGO_URI"] = 'mongodb://localhost/anropa'
 app.secret_key = 'mysecret'
 
 mongo = PyMongo(app)
@@ -22,9 +22,23 @@ def home():
 def about_us():
     return render_template("aboutus.html")
 
+
 @app.route('/vacancies')
 def vacancies():
-    return render_template("vacancies.html")
+    all_vacancies = mongo.db.vacancies.find()
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    return render_template("vacancies.html", user=one_user, vacancies=all_vacancies)
+
+@app.route('/delete_vacancy/<vacancy_id>')
+def delete_vacancy(vacancy_id):
+    mongo.db.vacancies.remove({'_id': ObjectId(vacancy_id)})
+    return redirect(url_for('vacancies'))
+
+#@app.route('/vacancies/<vacancy_id>')
+#def edit_vacancy(vacancy_id):
+    #all_vacancies = mongo.db.vacancies.find()
+    #return render_template("vacancies.html", vacancies=all_vacancies)
+
 
 @app.route('/employees')
 def employees():
@@ -39,22 +53,22 @@ def contact():
     return render_template("contact.html")
 
 # Account functionality
-@app.route('/profile')
-def profile():
-    if session.get('_id') is not None:
+
+@app.route('/profile/<user>')
+def profile(user):
+    if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-        users = mongo.db.users
-        if users.admin:
-            all_vacancies = mongo.db.vacancies.find()
-            return render_template("profile.html", user=one_user, vacancies=all_vacancies)
-        return render_template("profile.html", user=one_user)
+        all_users = mongo.db.users.find()
+        return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     else:
         return redirect(url_for('home'))
 
-@app.route('/profile_update', methods=['POST'])
-def profile_update():
-    users = mongo.db.users
-    users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+@app.route('/profile/updated/<user>', methods=['POST'])
+def profile_update(user):
+    session['tab'] = 'profile_tab'
+    all_users = mongo.db.users.find()
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
         {'name' : request.form['name'], 
         'address' : request.form['address'], 
         'city' : request.form['city'], 
@@ -62,19 +76,21 @@ def profile_update():
         'country' : request.form['country']
     }})
     flash('Your information has been updated succesfully!')
-    return redirect(url_for('profile'))
+    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
-@app.route('/cv_update', methods=['POST'])
-def cv_update():
-    users = mongo.db.users
+@app.route('/profile/cv_updated/<user>', methods=['POST'])
+def cv_update(user):
+    session['tab'] = 'cv_tab'
+    all_users = mongo.db.users.find()
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     cv_file = request.files['cv_file']
     mongo.save_file(cv_file.filename, cv_file)
-    users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
         {'current_job' : request.form['current_job'],
         'cv_file' : cv_file.filename
     }})
     flash('Your information has been updated succesfully!')
-    return redirect(url_for('profile'))
+    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 @app.route('/file/<filename>')
 def file(filename):
@@ -84,10 +100,13 @@ def file(filename):
 
 @app.route('/add_vacancy', methods=['POST'])
 def add_vacancy():
+    session['tab'] = 'vacancy_tab'
     vacancy = mongo.db.vacancies
+    all_users = mongo.db.users.find()
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     vacancy.insert({'vacancy_title' : request.form['add_vacancy_title'], 'vacancy_description' : request.form['add_vacancy_description']})
     flash('Vacancy added to the database!')
-    return redirect(url_for('profile'))
+    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # AUTH
 @app.route('/login', methods=['POST', 'GET'])
@@ -101,7 +120,8 @@ def login():
                 session['_id'] = str(user_login['_id'])
                 session['name'] = user_login['name']
                 session['email'] = user_login['email']
-                return redirect(url_for('profile'))
+                session['tab'] = 'profile_tab'
+                return redirect(url_for('profile', user=session['_id']))
         flash('Invalid username/password combination')
 
     return render_template("login.html")
@@ -114,12 +134,13 @@ def signup():
 
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass})
+            users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass, 'admin' : False})
             registered_user = users.find_one({'email' : request.form['email']})
             session['_id'] = str(registered_user['_id'])
             session['name'] = registered_user['name']
             session['email'] = registered_user['email']
-            return redirect(url_for('profile'))
+            session['tab'] = 'profile_tab'
+            return redirect(url_for('profile', user=session['_id']))
         
         flash('That email already exists!')
 
@@ -130,6 +151,7 @@ def logout():
     session.pop('_id', None)
     session.pop('name', None)
     session.pop('email', None)
+    session.pop('tab', None)
     return redirect(url_for('home'))
 
 app.run(debug=True)

@@ -24,7 +24,7 @@
                 <div class="collapse navbar-collapse" id="navbarMobileDropdown">
                     <ul class="navbar-nav">
                         {% if session['_id'] %}
-                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('profile')}}" class="nav-link">My Profile</a></li>
+                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
                         <li class="nav-item mr-3 d-md-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
                         {% else %}
                         <li class="nav-item mr-3 d-md-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="d-none d-md-block">
                     {% if session['_id'] %}
-                    <span class="nav-link pr-0"><a href="{{url_for('profile')}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
+                    <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
                     {% else %}
                     <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
                     {% endif %}

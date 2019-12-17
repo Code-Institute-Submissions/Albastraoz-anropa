@@ -2,4 +2,13 @@
 
 <h1>VACANCIES</h1>
 
+{% for vacancy in vacancies %}
+    <h4>{{ vacancy.vacancy_title }}</h4><br>
+    <p>{{ vacancy.vacancy_description }}</p><br>
+    {% if user.admin %}
+    <a href="{{url_for('delete_vacancy', vacancy_id=vacancy._id)}}" class="btn">Delete</a>
+    
+    {% endif %}
+{% endfor %}
+
 {% endblock %}
