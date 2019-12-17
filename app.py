@@ -29,15 +29,30 @@ def vacancies():
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     return render_template("vacancies.html", user=one_user, vacancies=all_vacancies)
 
+@app.route('/vacancies/<vacancy_id>')
+def view_vacancy(vacancy_id):
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
+    return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
+
 @app.route('/delete_vacancy/<vacancy_id>')
 def delete_vacancy(vacancy_id):
     mongo.db.vacancies.remove({'_id': ObjectId(vacancy_id)})
     return redirect(url_for('vacancies'))
 
-#@app.route('/vacancies/<vacancy_id>')
-#def edit_vacancy(vacancy_id):
-    #all_vacancies = mongo.db.vacancies.find()
-    #return render_template("vacancies.html", vacancies=all_vacancies)
+@app.route('/vacancies/edit/<vacancy_id>')
+def edit_vacancy(vacancy_id):
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
+    return render_template("edit_vacancy.html", user=one_user, vacancy=one_vacancies)
+
+@app.route('/vacancies/saved/<vacancy_id>', methods=['POST'])
+def save_vacancy(vacancy_id):
+    mongo.db.vacancies.update_one({'_id' : ObjectId(vacancy_id)}, {"$set":
+        {'vacancy_title' : request.form['edit_vacancy_title'], 
+        'vacancy_description' : request.form['edit_vacancy_description']
+    }})
+    return redirect(url_for('view_vacancy', vacancy_id=vacancy_id))
 
 
 @app.route('/employees')

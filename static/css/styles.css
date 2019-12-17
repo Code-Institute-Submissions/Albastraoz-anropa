@@ -23,3 +23,11 @@ body {
 .nav-whitespace {
     height: 76px;
 }
+
+.card {
+    margin-bottom: 30px;
+}
+
+.text-wrap-edit {
+    white-space: pre-wrap;
+}
