@@ -28,6 +28,24 @@ body {
     margin-bottom: 30px;
 }
 
+.vacancies-cards {
+    height: 210px; 
+}
+
+.html-edit-schortcuts {
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .text-wrap-edit {
     white-space: pre-wrap;
+}
+
+.vacancy-text {
+    max-width: 800px;
+}
+
+.view-vacancy-btn {
+    margin-top: 10px;
 }

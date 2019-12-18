@@ -1,17 +1,20 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>VACANCIES</h1>
-<div class="row">
-{% for vacancy in vacancies %}
-    <div class="col-12 col-md-4">
-        <div class="card">
-            <h5 class="card-header">{{ vacancy.vacancy_title }}</h5>
-            <div class="card-body">
-                <p class="card-text">{{ vacancy.vacancy_description[0:100] }}...</p>
-                <a href="{{url_for('view_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary">View vacancy</a>
+<div class="container">
+    <h1>VACANCIES</h1>
+    <div class="row">
+    {% for vacancy in vacancies %}
+        <div class="col-12 col-md-4">
+            <div class="card vacancies-cards">
+                <h5 class="card-header">{{ vacancy.vacancy_title }}</h5>
+                <div class="card-body">
+                    {{ vacancy.vacancy_description[0:100] | safe }}...<br>
+                    <a href="{{url_for('view_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary view-vacancy-btn">View vacancy</a>
+                </div>
             </div>
-        </div>
-    </div> 
-{% endfor %}
+        </div> 
+    {% endfor %}
+    </div>
 </div>
+
 {% endblock %}

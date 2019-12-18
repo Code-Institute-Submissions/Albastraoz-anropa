@@ -16,15 +16,18 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def home():
+    session['tab'] = 'profile_tab'
     return render_template("index.html")
 
 @app.route('/about_us')
 def about_us():
+    session['tab'] = 'profile_tab'
     return render_template("aboutus.html")
 
 
 @app.route('/vacancies')
 def vacancies():
+    session['tab'] = 'profile_tab'
     all_vacancies = mongo.db.vacancies.find()
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     return render_template("vacancies.html", user=one_user, vacancies=all_vacancies)
@@ -33,6 +36,7 @@ def vacancies():
 def view_vacancy(vacancy_id):
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
+
     return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
 
 @app.route('/delete_vacancy/<vacancy_id>')
@@ -57,14 +61,17 @@ def save_vacancy(vacancy_id):
 
 @app.route('/employees')
 def employees():
+    session['tab'] = 'profile_tab'
     return render_template("employees.html")
 
 @app.route('/employers')
 def employers():
+    session['tab'] = 'profile_tab'
     return render_template("employers.html")
 
 @app.route('/contact')
 def contact():
+    session['tab'] = 'profile_tab'
     return render_template("contact.html")
 
 # Account functionality
