@@ -18,6 +18,11 @@ h1, h2 {
     background-color: #fafafa;
 }
 
+.main-paragraph-spacing {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
 .content-box {
     padding: 80px 100px;
 }
