@@ -1,5 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Krona+One|Roboto&display=swap');
+
 body {
-    background-color: #dadada;
+    font-family: 'Roboto', sans-serif;
+    background-color: #e2e2e2;
+}
+
+h1, h2 {
+    font-family: 'Krona One', sans-serif;
+}
+
+.colors-blue {
+    background-color: #1A76BC;
+    color: #fafafa;
+}
+
+.colors-white {
+    background-color: #fafafa;
+}
+
+.content-box {
+    padding: 80px 100px;
+}
+
+.team-members {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.team-photo {
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.icons-homepage {
+    padding-bottom: 20px;
+}
+
+.home-paragraph {
+    padding-right: 20%;
+    padding-left: 20%;
+}
+
+.welcome-container {
+    background: url('/static/images/jumbotron-image.jpg') no-repeat center center fixed;
+    height: 100vh;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.jumbotron {
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .navbar-background-color {
@@ -21,11 +92,49 @@ body {
 }
 
 .nav-whitespace {
-    height: 76px;
+    height: 86px;
+}
+
+.footer-settings {
+    background-color: #1A76BC;
+    color: #fafafa;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.footer-paragraph {
+    margin-bottom: 0px;
+}
+
+.footer-link {
+    color: #fafafa;
+}
+
+.footer-link:hover {
+    color: #c5c5c5;
+    text-decoration: none;
+}
+
+.social-media li a i {
+    padding-right: 5px;
+    color: #fafafa;
+    transition: color 0.35s ease-in-out;
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+}
+
+.social-media li a i:hover {
+    color: rgb(148, 148, 148);
 }
 
 .card {
     margin-bottom: 30px;
+}
+
+.card-header {
+    color: #fafafa;
+    background-color: #1A76BC;
 }
 
 .vacancies-cards {
@@ -48,4 +157,25 @@ body {
 
 .view-vacancy-btn {
     margin-top: 10px;
+}
+
+.tab-content {
+    background-color: #fafafa;
+}
+
+.tab-bottom-spacing {
+    height: 25px;
+}
+
+.nav-tabs .nav-item .nav-link {
+    background-color: #1A76BC;
+    color: #ffffff !important;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+  
+.nav-tabs .nav-item .nav-link.active {
+    background-color: #fafafa;
+    border-color: #fafafa;
+    color: #000000 !important;
 }

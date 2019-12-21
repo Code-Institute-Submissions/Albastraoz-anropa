@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-
+<div class="nav-whitespace"></div>
 <div class="container">
     <h1>WELCOME {{ user.name }}</h1>
     {% with messages = get_flashed_messages() %}
@@ -87,6 +87,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
+                <div class="tab-bottom-spacing"></div>
             </div>
 
             <!-- CV TAB -->
@@ -102,20 +103,16 @@
                                 placeholder="eg Mailman">
                     </div>
                     <label for="cv_file">Upload CV</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Upload</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="cv_file" name="cv_file" value="{{ user.cv_file }}">
-                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                        </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="cv_file" name="cv_file">
+                        <label class="custom-file-label" for="cv_file">Choose file</label>
                     </div>
-                    {% if user.cv_file %}
-                        <a href="/file/{{user.cv_file}}">Download file</a><br>
-                    {% endif %}
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <br><button type="submit" class="btn btn-primary">Save</button>
                 </form>
+                {% if user.cv_file %}
+                    <a href="/file/{{user.cv_file}}">{{ user.cv_file }}</a><br>
+                {% endif %}
+                <div class="tab-bottom-spacing"></div>
             </div>
 
             <!-- Here starts the Admin only area -->
@@ -124,13 +121,14 @@
             <div id="users_tab" class="container tab-pane fade"><br>
                 {% for a_user in users %}
                     <h3>{{ a_user.name }}</h3>
-                    <h6>Profession: {{ a_user.current_job }}</h6>
+                    <p>Profession: {{ a_user.current_job }}</p>
                     <p>{{ a_user.email }}</p>
                     {% if a_user.cv_file %}
                         <a href="/file/{{user.cv_file}}">Download CV</a><br>
                     {% endif %}
                     <hr>
                 {% endfor %}
+                <div class="tab-bottom-spacing"></div>
             </div>
 
             <!-- Vacancies -->
@@ -154,6 +152,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
+                <div class="tab-bottom-spacing"></div>
             </div>
             {% endif %}
         </div>

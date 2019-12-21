@@ -29,14 +29,15 @@ def about_us():
 def vacancies():
     session['tab'] = 'profile_tab'
     all_vacancies = mongo.db.vacancies.find()
-    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    return render_template("vacancies.html", user=one_user, vacancies=all_vacancies)
+    return render_template("vacancies.html", vacancies=all_vacancies)
 
 @app.route('/vacancies/<vacancy_id>')
 def view_vacancy(vacancy_id):
-    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    if '_id' in session:
+        one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    else:
+        one_user = '0123456789'
     one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
-
     return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
 
 @app.route('/delete_vacancy/<vacancy_id>')
@@ -75,7 +76,6 @@ def contact():
     return render_template("contact.html")
 
 # Account functionality
-
 @app.route('/profile/<user>')
 def profile(user):
     if session['_id'] is not None:
@@ -105,12 +105,20 @@ def cv_update(user):
     session['tab'] = 'cv_tab'
     all_users = mongo.db.users.find()
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    cv_file = request.files['cv_file']
-    mongo.save_file(cv_file.filename, cv_file)
     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-        {'current_job' : request.form['current_job'],
-        'cv_file' : cv_file.filename
-    }})
+        {'current_job' : request.form['current_job']}})
+    if 'cv_file' in request.files:
+        cv_file = request.files['cv_file']
+        if cv_file.filename is not "":
+
+            #file_object = mongo.db.fs.files.find_one({'filename': str(one_user.cv_file)})
+            #file_id = file_object.get('_id')
+            #mongo.db.fs.chunks.remove({'files_id': ObjectId(file_id)})
+            #mongo.db.fs.files.remove({'_id': ObjectId(file_id)})
+
+            mongo.save_file(cv_file.filename, cv_file)
+            mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+            {'cv_file' : cv_file.filename}})
     flash('Your information has been updated succesfully!')
     return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 

@@ -1,7 +1,86 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="container">
-    <h1>HOME PAGE</h1>
+<!--JUMBOTRON-->
+<div class="container-fluid welcome-container">
+    <div class="dark-overlay">&nbsp;</div>
+    <div class="row">
+        <div class="col-12">
+            <section class="jumbotron">
+                <h1>ANROPA consultancy</h1>
+                <p>Make the step forward!</p>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!--WEBLINKS-->
+<div class="container-fluid colors-white content-box">
+    <div class="row">
+        <div class="col-12 col-md-4 text-center">
+            <i class="fas fa-search fa-5x icons-homepage"></i>
+            <h3>FIND YOUR JOB</h3>
+            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+        </div>
+        <div class="col-12 col-md-4 text-center">
+            <i class="fas fa-building fa-5x icons-homepage"></i>
+            <h3>ABOUT US</h3>
+            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+        </div>
+        <div class="col-12 col-md-4 text-center">
+            <i class="fas fa-question fa-5x icons-homepage"></i>
+            <h3>QUESTIONS</h3>
+            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p>
+        </div>
+    </div>
+</div>
+
+<!--QUOTES-->
+<div class="container-fluid colors-blue text-center content-box">
+    <div class="row">
+        <div class="col-12">
+            <h1>QUOTES</h1>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col-12 col-md-6">
+            <blockquote class="blockquote">
+                <p class="home-paragraph"><i class="fas fa-quote-left pr-2"></i>I've been introduced to more than 10 great international whiskeys I never knew about.<i class="fas fa-quote-right pl-2"></i></p>
+                <p>- Jane Doe</p>
+            </blockquote>
+        </div>
+        <div class="col-12 col-md-6">
+            <blockquote class="blockquote">
+                <p class="home-paragraph"><i class="fas fa-quote-left pr-2"></i>I haven't been sober for months! Let's drink!<i class="fas fa-quote-right pl-2"></i></p>
+                <p>- Daniel Wellington</p>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+<!--OUR TEAM-->
+<div class="container-fluid colors-white content-box">
+    <div class="row text-center">
+        <div class="col-12">
+            <h1>OUR TEAM</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4 team-members">
+            <img class="team-photo" src="/static/images/male-portrait.jpg" alt="Photo staff">
+            <h5>Robert van Olffen</h5>
+            <p>Director</p>
+        </div>
+        <div class="col-12 col-md-4 team-members">
+            <img class="team-photo" src="/static/images/female-portrait.jpg" alt="Photo staff">
+            <h5>Anja van Olffen</h5>
+            <p>Director</p>
+        </div>
+        <div class="col-12 col-md-4 team-members">
+            <img class="team-photo" src="/static/images/male-portrait.jpg" alt="Photo staff">
+            <h5>Milos de Graaf</h5>
+            <p>Recruiter</p>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

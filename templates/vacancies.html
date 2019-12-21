@@ -1,12 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-
+<div class="nav-whitespace"></div>
 <div class="container">
     <h1>VACANCIES</h1>
     <div class="row">
     {% for vacancy in vacancies %}
         <div class="col-12 col-md-4">
             <div class="card vacancies-cards">
-                <h5 class="card-header">{{ vacancy.vacancy_title }}</h5>
+                <h4 class="card-header">{{ vacancy.vacancy_title }}</h4>
                 <div class="card-body">
                     {{ vacancy.vacancy_description[0:100] | safe }}...<br>
                     <a href="{{url_for('view_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary view-vacancy-btn">View vacancy</a>
