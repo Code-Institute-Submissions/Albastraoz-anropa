@@ -9,6 +9,12 @@ h1, h2 {
     font-family: 'Krona One', sans-serif;
 }
 
+.page-images {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+}
+
 .colors-blue {
     background-color: #1A76BC;
     color: #fafafa;
