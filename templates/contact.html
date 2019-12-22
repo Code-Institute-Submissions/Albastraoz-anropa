@@ -1,7 +1,57 @@
 {% extends 'base.html' %} {% block content %}
+
 <div class="nav-whitespace"></div>
 <div class="container">
-    <h1>CONTACT</h1>
+    <div class="row pb-2">
+        <div class="col-12">
+            <h1>CONTACT US</h1>
+        </div>
+    </div>
+
+    <div class="row pb-5">
+        <div class="col-12 page-images">
+            <img src="/static/images/contact-image.jpg" alt="Working lady.">
+        </div>
+    </div>
+
+    <div class="row pb-5">
+        <div class="col-12 col-md-6">
+            <h3>Contact information</h3>
+            <p class="footer-paragraph">EMAIL: info@anropa.net</p>
+            <p class="footer-paragraph">PHONE: 0123456789</p>
+            <p class="footer-paragraph">ADDRESS:</p>
+            <p class="footer-paragraph">Kralja Petra oslobodioca 33</p>
+            <p class="footer-paragraph">14210 Ub, Serbia</p>
+        </div>
+        <div class="col-12 col-md-6">
+            <h3>Opening Hours</h3>
+            <p class="footer-paragraph">mon - fri: 08-00 - 17:00</p>
+            <p class="footer-paragraph">sat - sun: Closed</p>
+        </div>
+    </div>
+
+    <div class="row pb-5">
+        <div class="col-12">
+            <h3>Contact form</h3>
+            <form>
+                <div class="form-group input-width">
+                    <label for="exampleInputName1">Name</label>
+                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                </div>
+                <div class="form-group input-width">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Question</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send!</button>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}

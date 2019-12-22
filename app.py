@@ -109,7 +109,7 @@ def cv_update(user):
         {'current_job' : request.form['current_job']}})
     if 'cv_file' in request.files:
         cv_file = request.files['cv_file']
-        if cv_file.filename is not "":
+        if cv_file.filename != "":
 
             #file_object = mongo.db.fs.files.find_one({'filename': str(one_user.cv_file)})
             #file_id = file_object.get('_id')
