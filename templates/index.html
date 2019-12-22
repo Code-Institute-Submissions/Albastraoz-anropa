@@ -16,20 +16,29 @@
 <!--WEBLINKS-->
 <div class="container-fluid colors-white content-box">
     <div class="row">
-        <div class="col-12 col-md-4 text-center">
-            <i class="fas fa-search fa-5x icons-homepage"></i>
-            <h3>FIND YOUR JOB</h3>
-            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+        
+        <div class="col-12 col-md-4 text-center pb-5">
+            <a href="{{url_for('vacancies')}}">
+                <i class="fas fa-search fa-5x icons-homepage"></i>
+                <h3>FIND YOUR JOB</h3>
+                <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+            </a>
         </div>
-        <div class="col-12 col-md-4 text-center">
-            <i class="fas fa-building fa-5x icons-homepage"></i>
-            <h3>ABOUT US</h3>
-            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+        
+        <div class="col-12 col-md-4 text-center pb-5">
+            <a href="{{url_for('about_us')}}">
+                <i class="fas fa-building fa-5x icons-homepage"></i>
+                <h3>ABOUT US</h3>
+                <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p class="weblinks-paragraph">
+            </a>
         </div>
+
         <div class="col-12 col-md-4 text-center">
-            <i class="fas fa-question fa-5x icons-homepage"></i>
-            <h3>QUESTIONS</h3>
-            <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p>
+            <a href="{{url_for('contact')}}">
+                <i class="fas fa-question fa-5x icons-homepage"></i>
+                <h3>QUESTIONS</h3>
+                <p class="home-paragraph">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</p>
+            </a>
         </div>
     </div>
 </div>

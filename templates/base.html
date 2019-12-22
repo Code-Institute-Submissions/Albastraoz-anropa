@@ -17,17 +17,17 @@
 
     <header>
         <div class="container-fluid navbar-background-color fixed-top">
-            <nav class="navbar navbar-expand-sm navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light">
                 <a href="{{url_for('home')}}"><img src="/static/images/logo.png" class="header-logo" alt="Logo website and link to homepage"></a>
                 <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarMobileDropdown">
                     <ul class="navbar-nav">
                         {% if session['_id'] %}
-                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
-                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
+                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
+                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
                         {% else %}
-                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
-                        <li class="nav-item mr-3 d-md-none"><a href="{{url_for('signup')}}" class="nav-link">Signup</a></li>
+                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
+                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('signup')}}" class="nav-link">Signup</a></li>
                         {% endif %}
                         <li class="nav-item mr-3"><a href="{{url_for('about_us')}}" class="nav-link">About us</a></li>
                         <li class="nav-item mr-3"><a href="{{url_for('vacancies')}}" class="nav-link">Vacancies</a></li>
@@ -36,7 +36,7 @@
                         <li class="nav-item mr-3"><a href="{{url_for('contact')}}" class="nav-link">Contact</a></li>
                     </ul>
                 </div>
-                <div class="d-none d-md-block">
+                <div class="d-none d-lg-block">
                     {% if session['_id'] %}
                     <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
                     {% else %}
@@ -48,10 +48,10 @@
     </header>
     
     {% block content %} {% endblock %}
-
+    
     <footer class="container-fluid">
         <div class="row footer-settings justify-content-md-center">
-            <div class="col-md-2">
+            <div class="col-md-2 pb-3">
                 <h3>SITEMAP</h3>
                 <ul>
                     <li><a href="{{url_for('home')}}" class="footer-link">Home</a></li>
@@ -62,7 +62,7 @@
                     <li><a href="{{url_for('contact')}}" class="footer-link">Contact</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 pb-3">
                 <h3>CONTACT INFORMATION</h3>
                 <p class="footer-paragraph">EMAIL: info@anropa.net</p>
                 <p class="footer-paragraph">PHONE: 0123456789</p>
@@ -71,7 +71,7 @@
                 <p class="footer-paragraph">14210 Ub, Serbia</p>
             </div>
             <!--LINKS TO ALL SOCIAL MEDIA PAGES-->
-            <div class="col-md-3 footer-section">
+            <div class="col-md-3 pb-3 footer-section">
                 <h3>FOLLOW US</h3>
                 <ul class="list-inline social-media">
                     <li class="list-inline-item">
