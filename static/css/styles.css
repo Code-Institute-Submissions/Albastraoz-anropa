@@ -1,5 +1,8 @@
+/* HERE I IMPORT THE FONTS USED ON THE WEBSITE FROM GOOGLE FONTS SOURCE: https://fonts.google.com/ */
+
 @import url('https://fonts.googleapis.com/css?family=Krona+One|Roboto&display=swap');
 
+/*---------- GENERAL STYLING ----------*/
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #e2e2e2;
@@ -18,15 +21,6 @@ a:hover {
     text-decoration: none;
 }
 
-.page-image-div {
-    max-height: 400px;
-    overflow: hidden;
-}
-
-.page-images {
-    width: 100%;
-}
-
 .colors-blue {
     background-color: #1A76BC;
     color: #fafafa;
@@ -36,70 +30,7 @@ a:hover {
     background-color: #fafafa;
 }
 
-.main-paragraph-spacing {
-    padding-right: 50px;
-    padding-left: 50px;
-}
-
-.content-box {
-    padding: 50px 0;
-}
-
-.team-members {
-    padding-right: 50px;
-    padding-left: 50px;
-}
-
-.team-photo {
-    width: 100%;
-    padding-bottom: 5px;
-}
-
-.icons-homepage {
-    padding-bottom: 20px;
-}
-
-.blockquote {
-    text-align: -webkit-center;
-}
-
-.home-paragraph {
-    max-width: 300px;
-    margin: auto;
-}
-
-.welcome-container {
-    background: url('/static/images/jumbotron-image.jpg') no-repeat center center fixed;
-    height: 100vh;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    display: -webkit-flex;
-    -webkit-align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.jumbotron {
-    background-color: transparent;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 0;
-    border-radius: 0;
-}
-
-.dark-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
+/* NAVBAR */
 .navbar-background-color {
     background-color: white;
 }
@@ -118,10 +49,20 @@ a:hover {
     padding-right: 20px;
 }
 
-.nav-whitespace {
-    height: 86px;
+.nav-tabs .nav-item .nav-link {
+    background-color: #1A76BC;
+    color: #ffffff !important;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+  
+.nav-tabs .nav-item .nav-link.active {
+    background-color: #fafafa;
+    border-color: #fafafa;
+    color: #000000 !important;
 }
 
+/* FOOTER */
 .footer-settings {
     background-color: #1A76BC;
     color: #fafafa;
@@ -155,6 +96,86 @@ a:hover {
     color: rgb(148, 148, 148);
 }
 
+/* HOMEPAGE STYLING */
+.content-box {
+    padding: 50px 0;
+}
+
+.welcome-container {
+    background: url('/static/images/jumbotron-image.jpg') no-repeat center center fixed;
+    height: 100vh;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.jumbotron {
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+    border-radius: 0;
+}
+
+.dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.icons-homepage {
+    padding-bottom: 20px;
+}
+
+.blockquote {
+    text-align: -webkit-center;
+}
+
+.main-paragraph-spacing {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.home-paragraph {
+    max-width: 300px;
+    margin: auto;
+}
+
+/* team-members and team-photo also used on aboutus page */
+.team-members {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+.team-photo {
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+/* PAGES POSITIONING */
+.page-image-div {
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.page-images {
+    width: 100%;
+}
+
+.nav-whitespace {
+    height: 86px;
+}
+
+/* VACANCY OBJECT */
 .card {
     margin-bottom: 30px;
 }
@@ -168,6 +189,24 @@ a:hover {
     height: 210px; 
 }
 
+.vacancy-text {
+    max-width: 800px;
+}
+
+.view-vacancy-btn {
+    margin-top: 10px;
+}
+
+/* PROFILE PAGE */
+.tab-content {
+    background-color: #fafafa;
+}
+
+.tab-bottom-spacing {
+    height: 25px;
+}
+
+/* EDIT PAGE STYLING */
 .html-edit-schortcuts {
     float: right;
     margin-left: 5px;
@@ -178,35 +217,7 @@ a:hover {
     white-space: pre-wrap;
 }
 
-.vacancy-text {
-    max-width: 800px;
-}
-
-.view-vacancy-btn {
-    margin-top: 10px;
-}
-
-.tab-content {
-    background-color: #fafafa;
-}
-
-.tab-bottom-spacing {
-    height: 25px;
-}
-
-.nav-tabs .nav-item .nav-link {
-    background-color: #1A76BC;
-    color: #ffffff !important;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-  
-.nav-tabs .nav-item .nav-link.active {
-    background-color: #fafafa;
-    border-color: #fafafa;
-    color: #000000 !important;
-}
-
+/* RESPONSIVE STYLING */
 @media (min-width: 768px) {
     .content-box {
         padding: 80px 100px;

@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="nav-whitespace"></div>
 <div class="container">
+    <!--Welcome message-->
     <h1>WELCOME {{ user.name }}</h1>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -10,7 +11,9 @@
     {% endif %}
     {% endwith %}
 
+    <!--Profile page-->
     <div class="container pb-5">
+        <!--Profile navigation-->
         <ul class="nav nav-tabs" role="tablist">
             {% if tab == 'profile_tab' %}
             <li class="nav-item">

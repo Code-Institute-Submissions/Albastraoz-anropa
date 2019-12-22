@@ -15,42 +15,44 @@
 </head>
 <body>
 
-    <header>
-        <div class="container-fluid navbar-background-color fixed-top">
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <a href="{{url_for('home')}}"><img src="/static/images/logo.png" class="header-logo" alt="Logo website and link to homepage"></a>
-                <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarMobileDropdown">
-                    <ul class="navbar-nav">
-                        {% if session['_id'] %}
-                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
-                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
-                        {% else %}
-                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
-                        <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('signup')}}" class="nav-link">Signup</a></li>
-                        {% endif %}
-                        <li class="nav-item mr-3"><a href="{{url_for('about_us')}}" class="nav-link">About us</a></li>
-                        <li class="nav-item mr-3"><a href="{{url_for('vacancies')}}" class="nav-link">Vacancies</a></li>
-                        <li class="nav-item mr-3"><a href="{{url_for('employees')}}" class="nav-link">Employees</a></li>
-                        <li class="nav-item mr-3"><a href="{{url_for('employers')}}" class="nav-link">Employers</a></li>
-                        <li class="nav-item mr-3"><a href="{{url_for('contact')}}" class="nav-link">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="d-none d-lg-block">
+    <!--HEADER-->
+    <header>    
+        <nav class="container-fluid fixed-top navbar navbar-expand-lg navbar-light bg-light">
+            <a href="{{url_for('home')}}"><img src="/static/images/logo.png" class="header-logo" alt="Logo website and link to homepage"></a>
+            <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarMobileDropdown">
+                <ul class="navbar-nav">
                     {% if session['_id'] %}
-                    <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
+                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
+                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
                     {% else %}
-                    <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
+                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
+                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('signup')}}" class="nav-link">Signup</a></li>
                     {% endif %}
-                </div>
-            </nav>
-        </div>
+                    <li class="nav-item mr-3"><a href="{{url_for('about_us')}}" class="nav-link">About us</a></li>
+                    <li class="nav-item mr-3"><a href="{{url_for('vacancies')}}" class="nav-link">Vacancies</a></li>
+                    <li class="nav-item mr-3"><a href="{{url_for('employees')}}" class="nav-link">Employees</a></li>
+                    <li class="nav-item mr-3"><a href="{{url_for('employers')}}" class="nav-link">Employers</a></li>
+                    <li class="nav-item mr-3"><a href="{{url_for('contact')}}" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="d-none d-lg-block">
+                {% if session['_id'] %}
+                <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
+                {% else %}
+                <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
+                {% endif %}
+            </div>
+        </nav>
     </header>
     
+    <!--HERE FOLLOWS CONTENT OF OTHER PAGES-->
     {% block content %} {% endblock %}
     
+    <!--FOOTER-->
     <footer class="container-fluid">
         <div class="row footer-settings justify-content-md-center">
+            <!--NAVIGATIONAL SITEMAP-->
             <div class="col-md-2 pb-3">
                 <h3>SITEMAP</h3>
                 <ul>
@@ -62,6 +64,7 @@
                     <li><a href="{{url_for('contact')}}" class="footer-link">Contact</a></li>
                 </ul>
             </div>
+            <!--CONTACT INFORMATION-->
             <div class="col-md-4 pb-3">
                 <h3>CONTACT INFORMATION</h3>
                 <p class="footer-paragraph">EMAIL: info@anropa.net</p>
@@ -112,6 +115,7 @@
     <script src="https://kit.fontawesome.com/5d737143b8.js" crossorigin="anonymous"></script>
 
     <script>
+        /* This code is used to insert a piece of text into a textarea at the current position of the cursor */
         function inyectarTexto(elemento,valor){
             var elemento_dom=document.getElementsByName(elemento)[0];
             if(document.selection){
@@ -130,6 +134,7 @@
             }
         }
 
+        /* This checks if the file that the user is trying to upload is too big */
         $('#cv_file').on('change',function(){
             if(this.files[0].size > 1048576){
                 alert("File is too big!");

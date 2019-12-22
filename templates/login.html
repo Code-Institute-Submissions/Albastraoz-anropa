@@ -1,10 +1,14 @@
 {% extends 'base.html' %} {% block content %}
+
 <div class="nav-whitespace"></div>
 <div class="container">
+    <!--Title-->
     <div class="row">
         <div class="col-12">
             <h1>LOGIN</h1>
         </div>
+
+        <!--Login form-->
         <div class="col-12 pb-5">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
