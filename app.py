@@ -16,7 +16,7 @@ app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 app.config["MAIL_SERVER"] = os.environ.get('MAIL_SERVER')
 app.config["MAIL_PORT"] = os.environ.get('MAIL_PORT')
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
 app.config["MAIL_MAX_EMAILS"] = 5
@@ -102,7 +102,7 @@ def send_email():
     contact_name = request.form.get('contact_name')
     contact_email = request.form.get('contact_email')
     contact_message = request.form.get('contact_message')
-    msg = Message('website contact form', sender=contact_email, recipients=['roboezzz@hotmail.com'])
+    msg = Message('website contact form', sender=contact_email, recipients=['rkaalnew@gmail.com'])
     msg.html = 'Contact name:{}<br>Contact email:{}<br>Message:<br>{}'.format(contact_name, contact_email, contact_message)
     mail.send(msg)
     flash('Your email has been send!')
