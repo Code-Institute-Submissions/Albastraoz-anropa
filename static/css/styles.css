@@ -8,7 +8,8 @@ body {
     background-color: #e2e2e2;
 }
 
-h1, h2 {
+h1 {
+    font-size: 26px;
     font-family: 'Krona One', sans-serif;
 }
 
@@ -186,7 +187,8 @@ a:hover {
 }
 
 .vacancies-cards {
-    height: 210px; 
+    height: 210px;
+    max-width: 400px; 
 }
 
 .vacancy-text {
@@ -219,6 +221,9 @@ a:hover {
 
 /* RESPONSIVE STYLING */
 @media (min-width: 768px) {
+    h1 {
+        font-size: 32px;
+    }
     .content-box {
         padding: 80px 100px;
     }

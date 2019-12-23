@@ -14,7 +14,7 @@
     {% for vacancy in vacancies %}
         <div class="col-12 col-md-6 col-xl-4">
             <div class="card vacancies-cards">
-                <h4 class="card-header">{{ vacancy.vacancy_title }}</h4>
+                <h4 class="card-header">{{ vacancy.vacancy_title[0:18] }}</h4>
                 <div class="card-body">
                     {{ vacancy.vacancy_description[0:100] | safe }}...<br>
                     <a href="{{url_for('view_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary view-vacancy-btn">View vacancy</a>

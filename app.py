@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, redirect, session, request, url_for, flash
+from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import bcrypt
@@ -7,11 +8,22 @@ import bcrypt
 app = Flask(__name__)
 
 # CONNECTION TO DATABASE
-app.config['MONGO_DBNAME'] = os.environ.get('MONGO_DBNAME')
+app.config["MONGO_DBNAME"] = os.environ.get('MONGO_DBNAME')
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 
+# EMAIL SERVICE SETTINGS
+app.config["MAIL_SERVER"] = os.environ.get('MAIL_SERVER')
+app.config["MAIL_PORT"] = os.environ.get('MAIL_PORT')
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
+app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
+app.config["MAIL_MAX_EMAILS"] = 5
+app.config["MAIL_ASCII_ATTACHMENTS"] = False
+
 mongo = PyMongo(app)
+mail = Mail(app)
 
 # WEB PAGES
 # Homepage
@@ -82,6 +94,18 @@ def employers():
 @app.route('/contact')
 def contact():
     session['tab'] = 'profile_tab'
+    return render_template("contact.html")
+
+# SEND EMAIL FROM CONTACT FORM
+@app.route('/contact/send_email')
+def send_email():
+    contact_name = request.form['contact_name']
+    contact_email = request.form['contact_email']
+    contact_message = request.form['contact_message']
+    msg = Message(contact_name+', contact form', sender=contact_email, recipients=['rkaal7@gmail.com'])
+    msg.html = 'Contact name:'+contact_name+'<br>Contact email:'+contact_email+'<br>Message:<br>'+contact_message
+    mail.send(msg)
+    flash('Your email has been send!')
     return render_template("contact.html")
 
 # ACCOUNT FUNCTIONALITY

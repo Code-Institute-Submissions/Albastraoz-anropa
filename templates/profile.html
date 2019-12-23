@@ -112,7 +112,7 @@
                     </div>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success mt-3" role="alert">
                         {{ messages[0] }}
                     </div>
                     {% endif %}
@@ -139,8 +139,7 @@
                             File has to be below 1MB.
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">I understand!</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">I understand!</button>
                         </div>
                     </div>
                 </div>

@@ -37,20 +37,27 @@
     <div class="row pb-5">
         <div class="col-12">
             <h3>Contact form</h3>
-            <form>
+            <form method=POST action="{{ url_for('send_email') }}">
                 <div class="form-group input-width">
-                    <label for="exampleInputName1">Name</label>
-                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                    <label for="contact_name">Name*</label>
+                    <input type="text" class="form-control" id="contact_name" placeholder="Name" required>
                 </div>
                 <div class="form-group input-width">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <label for="contact_email">Email address*</label>
+                    <input type="email" class="form-control" id="contact_email" aria-describedby="emailHelp" placeholder="Enter email" required>
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Question</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                    <label for="contact_message">Question*</label>
+                    <textarea class="form-control" id="contact_message" rows="5" required></textarea>
                 </div>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ messages[0] }}
+                </div>
+                {% endif %}
+                {% endwith %}
                 <button type="submit" class="btn btn-primary">Send!</button>
             </form>
         </div>
