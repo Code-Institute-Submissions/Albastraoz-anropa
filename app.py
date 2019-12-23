@@ -118,8 +118,36 @@ def send_email():
 
 # ACCOUNT FUNCTIONALITY
 # Load profile page
-@app.route('/profile/<user>')
+@app.route('/profile/<user>', methods=["GET", "POST"])
 def profile(user):
+    if request.method == 'POST':
+        all_users = mongo.db.users.find()
+        one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+        if request.form['name']:
+            session['tab'] = 'profile_tab'
+            mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+                {'name' : request.form['name'], 
+                'address' : request.form['address'], 
+                'city' : request.form['city'], 
+                'zipcode' : request.form['zipcode'],
+                'country' : request.form['country']
+            }})
+            flash('Your information has been updated succesfully!')
+            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+        if request.form['current_job']:
+            session['tab'] = 'cv_tab'
+            mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+                {'current_job' : request.form['current_job']}})
+            # Check if file is chosen
+            if 'cv_file' in request.files:
+                cv_file = request.files['cv_file']
+                # Check if filename is not empty
+                if cv_file.filename != "":
+                    mongo.save_file(cv_file.filename, cv_file)
+                    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+                    {'cv_file' : cv_file.filename}})
+            flash('Your information has been updated succesfully!')
+            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         all_users = mongo.db.users.find()
@@ -128,40 +156,40 @@ def profile(user):
         return redirect(url_for('home'))
 
 # Save changes to profile
-@app.route('/profile/updated/<user>', methods=['POST'])
-def profile_update(user):
-    session['tab'] = 'profile_tab'
-    all_users = mongo.db.users.find()
-    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+#@app.route('/profile/updated/<user>', methods=['POST'])
+#def profile_update(user):
+    #session['tab'] = 'profile_tab'
+    #all_users = mongo.db.users.find()
+    #one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     # Update databse information
-    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-        {'name' : request.form['name'], 
-        'address' : request.form['address'], 
-        'city' : request.form['city'], 
-        'zipcode' : request.form['zipcode'],
-        'country' : request.form['country']
-    }})
-    flash('Your information has been updated succesfully!')
-    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+    #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+        #{'name' : request.form['name'], 
+        #'address' : request.form['address'], 
+        #'city' : request.form['city'], 
+        #'zipcode' : request.form['zipcode'],
+        #'country' : request.form['country']
+    #}})
+    #flash('Your information has been updated succesfully!')
+    #return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # Update CV of profile
-@app.route('/profile/cv_updated/<user>', methods=['POST'])
-def cv_update(user):
-    session['tab'] = 'cv_tab'
-    all_users = mongo.db.users.find()
-    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-        {'current_job' : request.form['current_job']}})
+#@app.route('/profile/cv_updated/<user>', methods=['POST'])
+#def cv_update(user):
+    #session['tab'] = 'cv_tab'
+    #all_users = mongo.db.users.find()
+    #one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+        #{'current_job' : request.form['current_job']}})
     # Check if file is chosen
-    if 'cv_file' in request.files:
-        cv_file = request.files['cv_file']
+    #if 'cv_file' in request.files:
+        #cv_file = request.files['cv_file']
         # Check if filename is not empty
-        if cv_file.filename != "":
-            mongo.save_file(cv_file.filename, cv_file)
-            mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-            {'cv_file' : cv_file.filename}})
-    flash('Your information has been updated succesfully!')
-    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+        #if cv_file.filename != "":
+            #mongo.save_file(cv_file.filename, cv_file)
+            #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+            #{'cv_file' : cv_file.filename}})
+    #flash('Your information has been updated succesfully!')
+    #return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # Location to files
 @app.route('/file/<filename>')

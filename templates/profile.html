@@ -46,7 +46,7 @@
             {% else %}
             <div id="profile_tab" class="container tab-pane fade"><br>
             {% endif %}
-                <form method="POST" action="{{ url_for('profile_update', user=session['_id'])}}" enctype="multipart/form-data">
+                <form method="POST" action="{{ url_for('profile', user=session['_id'])}}" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" required>
@@ -99,7 +99,7 @@
             {% else %}
             <div id="cv_tab" class="container tab-pane fade"><br>
             {% endif %}
-                <form method="POST" action="{{ url_for('cv_update', user=session['_id'])}}" enctype="multipart/form-data">
+                <form method="POST" action="{{ url_for('profile', user=session['_id'])}}" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="current_job">Current Position</label>
                         <input type="text" class="form-control" id="current_job" name="current_job" value="{{ user.current_job }}"
