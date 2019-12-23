@@ -97,7 +97,7 @@ def contact():
     return render_template("contact.html")
 
 # SEND EMAIL FROM CONTACT FORM
-@app.route('/contact/send_email')
+@app.route('/contact/send_email', methods=['POST'])
 def send_email():
     contact_name = request.form['contact_name']
     contact_email = request.form['contact_email']
