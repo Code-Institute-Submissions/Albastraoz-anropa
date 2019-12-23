@@ -53,9 +53,8 @@ def view_vacancy(vacancy_id):
     one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
     if request.method == 'POST':
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-        print(one_user)
-        msg = Message('Job application', sender=one_user.email, recipients=['rkaal7@gmail.com'])
-        msg.html = 'Applicants name:{}<br>Applicants email:{}<br>Vacancy:<br>{}'.format(one_user.name, one_user.email, one_vacancies.vacancy_title)
+        msg = Message('Job application', sender=one_user["email"], recipients=['rkaal7@gmail.com'])
+        msg.html = 'Applicants name:{}<br>Applicants email:{}<br>Vacancy:<br>{}'.format(one_user["name"], one_user["email"], one_vacancies["vacancy_title"])
         mail.send(msg)
         flash('Your application has been send!')
         return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
@@ -135,7 +134,7 @@ def profile(user):
                 'country' : request.form['country']
             }})
             flash('Your information has been updated succesfully!')
-            return redirect(url_for('profile', tab=session['tab'], user=one_user, users=all_users))#render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
         # Check which form is used
         if request.form['current_job']:
             session['tab'] = 'cv_tab'
@@ -150,49 +149,13 @@ def profile(user):
                     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                     {'cv_file' : cv_file.filename}})
             flash('Your information has been updated succesfully!')
-            return redirect(url_for('profile', tab=session['tab'], user=one_user, users=all_users))#render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         all_users = mongo.db.users.find()
         return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     else:
         return redirect(url_for('home'))
-
-# Save changes to profile
-#@app.route('/profile/updated/<user>', methods=['POST'])
-#def profile_update(user):
-    #session['tab'] = 'profile_tab'
-    #all_users = mongo.db.users.find()
-    #one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    # Update databse information
-    #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-        #{'name' : request.form['name'], 
-        #'address' : request.form['address'], 
-        #'city' : request.form['city'], 
-        #'zipcode' : request.form['zipcode'],
-        #'country' : request.form['country']
-    #}})
-    #flash('Your information has been updated succesfully!')
-    #return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
-
-# Update CV of profile
-#@app.route('/profile/cv_updated/<user>', methods=['POST'])
-#def cv_update(user):
-    #session['tab'] = 'cv_tab'
-    #all_users = mongo.db.users.find()
-    #one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-        #{'current_job' : request.form['current_job']}})
-    # Check if file is chosen
-    #if 'cv_file' in request.files:
-        #cv_file = request.files['cv_file']
-        # Check if filename is not empty
-        #if cv_file.filename != "":
-            #mongo.save_file(cv_file.filename, cv_file)
-            #mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-            #{'cv_file' : cv_file.filename}})
-    #flash('Your information has been updated succesfully!')
-    #return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # Location to files
 @app.route('/file/<filename>')

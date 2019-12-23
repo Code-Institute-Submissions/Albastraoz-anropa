@@ -5,6 +5,10 @@ The goal was to create a good looking website with easy to use tools for admin a
 Before I decided to accept this project I already created a logo and business card for the client.
 This gave me the advantage of that I already knew the colors and layout to use in the website.
 
+To get admin access to the website use the following login:
+email: admin@anropa.com
+password: anropaadmin
+
 Hosted on [Heroku](https://anropa-developmentsite.herokuapp.com/)
 Repository on [GitHub](https://github.com/Albastraoz/anropa)
 
@@ -47,6 +51,7 @@ Features planned, implemented and outlined for later development
 ### Planned Features
 - Documentation - ReadMe File & Mockups
 - Website content
+- Contact form functionality
 - Colour Scheme
 - Custom Logo
 - MongoDB database
@@ -70,6 +75,7 @@ Features planned, implemented and outlined for later development
 ### Existing Features
 - Documentation - ReadMe File & Mockups
 - Website content
+- Contact form functionality
 - Colour Scheme
 - Custom Logo
 - MongoDB database
@@ -95,7 +101,6 @@ Features planned, implemented and outlined for later development
 - Search function for vacancies
 - Search function for user database (admin only)
 - Apply button which sends details to recruiters email
-- Contact form functionality
 
 ## Technologies Used
 
