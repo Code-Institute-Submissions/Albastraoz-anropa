@@ -48,13 +48,20 @@ def vacancies():
     return render_template("vacancies.html", vacancies=all_vacancies)
 
 # Full description of a specific vacancy
-@app.route('/vacancies/<vacancy_id>')
+@app.route('/vacancies/<vacancy_id>', methods=["GET", "POST"])
 def view_vacancy(vacancy_id):
+    one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
+    if request.method == 'POST':
+        one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+        msg = Message('Job application', sender=one_user.email, recipients=['rkaal7@gmail.com'])
+        msg.html = 'Applicants name:{}<br>Applicants email:{}<br>Vacancy:<br>{}'.format(one_user.name, one_user.email, one_vacancies.vacancy_title)
+        mail.send(msg)
+        flash('Your application has been send!')
+        return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
     if '_id' in session:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     else:
         one_user = '0123456789'
-    one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
     return render_template("vacancy.html", user=one_user, vacancy=one_vacancies)
 
 # Delete a specific vacancy

@@ -9,6 +9,14 @@
         </div>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-success" role="alert">
+        {{ messages[0] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <!--Page image-->
     <div class="row pb-5">
         <div class="col-12 page-image-div">
@@ -51,13 +59,6 @@
                     <label for="contact_message">Question*</label>
                     <textarea class="form-control" id="contact_message" name="contact_message" rows="5" required></textarea>
                 </div>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <div class="alert alert-success" role="alert">
-                    {{ messages[0] }}
-                </div>
-                {% endif %}
-                {% endwith %}
                 <button type="submit" class="btn btn-primary">Send!</button>
             </form>
         </div>
