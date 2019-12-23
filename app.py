@@ -15,7 +15,7 @@ app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 # EMAIL SERVICE SETTINGS
 app.config["MAIL_SERVER"] = os.environ.get('MAIL_SERVER')
 app.config["MAIL_PORT"] = os.environ.get('MAIL_PORT')
-app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
 app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
