@@ -12,7 +12,7 @@
         <div class="col-12 pb-5">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div>
+                <div class="alert alert-danger" role="alert">
                     {{ messages[0] }}
                 </div>
             {% endif %}

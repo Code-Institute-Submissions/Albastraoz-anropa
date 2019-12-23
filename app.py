@@ -34,7 +34,7 @@ def vacancies():
     all_vacancies = mongo.db.vacancies.find()
     return render_template("vacancies.html", vacancies=all_vacancies)
 
-# Full description a specific vacancy
+# Full description of a specific vacancy
 @app.route('/vacancies/<vacancy_id>')
 def view_vacancy(vacancy_id):
     if '_id' in session:

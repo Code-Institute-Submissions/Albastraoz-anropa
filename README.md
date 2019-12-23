@@ -5,7 +5,7 @@ The goal was to create a good looking website with easy to use tools for admin a
 Before I decided to accept this project I already created a logo and business card for the client.
 This gave me the advantage of that I already knew the colors and layout to use in the website.
 
-Hosted on [Heroku](------)
+Hosted on [Heroku](https://anropa-developmentsite.herokuapp.com/)
 Repository on [GitHub](https://github.com/Albastraoz/anropa)
 
 ## UX
@@ -161,7 +161,7 @@ After complete product start to addres coding errors:
 
 ## Deployment
 
-The project is hosted on [Heroku](---)
+The project is hosted on [Heroku](https://anropa-developmentsite.herokuapp.com/)
  
 To deploy your own version of the website:
 - Have git installed
