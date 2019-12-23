@@ -2,61 +2,63 @@
 
 <div class="nav-whitespace"></div>
 <div class="container vacancy-text">
-    <!--Vacancy Title-->
-    <div class="row pb-2">
-        <div class="col-12">
-            <h1>{{ vacancy.vacancy_title }}</h1>
-        </div>
+  <!--Vacancy Title-->
+  <div class="row pb-2">
+    <div class="col-12">
+      <h1>{{ vacancy.vacancy_title }}</h1>
     </div>
+  </div>
 
-    <!--Vacancy descpription and buttons-->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                  {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                  <div class="alert alert-success" role="alert">
-                    {{ messages[0] }}
-                  </div>
-                  {% endif %}
-                  {% endwith %}
-                    <p>{{ vacancy.vacancy_description | safe }}</p>
-                    <a href="{{url_for('vacancies')}}" class="btn btn-primary">Back</a>
-                    {% if user.admin %}
-                    <a href="{{url_for('edit_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary">Edit</a>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmation">Delete</button>
-                    {% endif %}
-                    {% if user != '0123456789' %}
-                    <form method="POST" action="{{ url_for('view_vacancy', vacancy_id=vacancy._id, user=session['_id'])}}">
-                      <button type="submit" class="btn btn-primary">Apply</button>
-                    </form>
-                    {% endif %}
-                </div>
-            </div>
-        </div> 
-    </div>
-</div>
-
-<!--Modal to confirm deletion of vacancy (defensive design)-->
-<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteConfirmationLabel">Delete {{ vacancy.vacancy_title }}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete {{ vacancy.vacancy_title }} permenantly?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a href="{{url_for('delete_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-danger">Delete</a>
+  <!--Vacancy descpription and buttons-->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="alert alert-success" role="alert">
+            {{ messages[0] }}
+          </div>
+          {% endif %}
+          {% endwith %}
+          <p>{{ vacancy.vacancy_description | safe }}</p>
+          {% if user != '0123456789' %}
+          <form method="POST" action="{{ url_for('view_vacancy', vacancy_id=vacancy._id, user=session['_id'])}}">
+            <button type="submit" class="btn btn-primary float-right">Apply</button>
+          </form>
+          {% endif %}
+          <a href="{{url_for('vacancies')}}" class="btn btn-primary">Back</a>
+          {% if user.admin %}
+          <a href="{{url_for('edit_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-primary">Edit</a>
+          <button type="button" class="btn btn-danger" data-toggle="modal"
+            data-target="#deleteConfirmation">Delete</button>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!--Modal to confirm deletion of vacancy (defensive design)-->
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmationLabel">Delete {{ vacancy.vacancy_title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete {{ vacancy.vacancy_title }} permenantly?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="{{url_for('delete_vacancy', vacancy_id=vacancy._id)}}" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

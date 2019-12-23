@@ -52,6 +52,7 @@ Features planned, implemented and outlined for later development
 - Documentation - ReadMe File & Mockups
 - Website content
 - Contact form functionality
+- Apply button to apply for job
 - Colour Scheme
 - Custom Logo
 - MongoDB database
@@ -76,6 +77,7 @@ Features planned, implemented and outlined for later development
 - Documentation - ReadMe File & Mockups
 - Website content
 - Contact form functionality
+- Apply button to apply for job
 - Colour Scheme
 - Custom Logo
 - MongoDB database
@@ -100,7 +102,6 @@ Features planned, implemented and outlined for later development
 - Multiple file uploads
 - Search function for vacancies
 - Search function for user database (admin only)
-- Apply button which sends details to recruiters email
 
 ## Technologies Used
 

@@ -166,6 +166,11 @@ a:hover {
     padding-bottom: 5px;
 }
 
+.team-padding {
+    padding-right: 100px;
+    padding-left: 100px;
+}
+
 /* PAGES POSITIONING */
 .page-image-div {
     max-height: 400px;
@@ -191,7 +196,7 @@ a:hover {
 }
 
 .vacancies-cards {
-    height: 210px;
+    height: auto;
     max-width: 400px; 
 }
 
@@ -231,6 +236,17 @@ a:hover {
     .content-box {
         padding: 80px 100px;
     }
+    .vacancies-cards {
+        height: 210px;
+    }
+    .team-members {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .team-padding {
+        padding-right: 10px;
+        padding-left: 10px;
+    }    
 }
 
 @media (min-width: 992px) {
@@ -243,4 +259,12 @@ a:hover {
     .nav-link {
         font-size: 24px;
     }
+    .team-members {
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+    .team-padding {
+        padding-right: 100px;
+        padding-left: 100px;
+    }    
 }

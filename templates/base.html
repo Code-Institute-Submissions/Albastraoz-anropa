@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +8,29 @@
     <title>Anropa</title>
 
     <!--HERE I IMPORTED BOOTSTRAP 4.3 STYLESHEET SOURCE: https://getbootstrap.com/docs/4.3/getting-started/download/-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!--HERE I IMPORT MY OWN STYLESHEET TO OVERLAP BOOTSTRAPS STYLES AND CREATE MY OWN-->
     <link rel="stylesheet" href="/static/css/styles.css" type="text/css" />
 
 </head>
+
 <body>
 
     <!--HEADER-->
-    <header>    
+    <header>
         <nav class="container-fluid fixed-top navbar navbar-expand-lg navbar-light bg-light">
-            <a href="{{url_for('home')}}"><img src="/static/images/logo.png" class="header-logo" alt="Logo website and link to homepage"></a>
-            <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <a href="{{url_for('home')}}"><img src="/static/images/logo.png" class="header-logo"
+                    alt="Logo website and link to homepage"></a>
+            <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarMobileDropdown" aria-controls="navbarMobileDropdown" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarMobileDropdown">
                 <ul class="navbar-nav">
                     {% if session['_id'] %}
-                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a></li>
+                    <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('profile', user=session['_id'])}}"
+                            class="nav-link">My Profile</a></li>
                     <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('logout')}}" class="nav-link">Logout</a></li>
                     {% else %}
                     <li class="nav-item mr-3 d-lg-none"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
@@ -38,17 +45,19 @@
             </div>
             <div class="d-none d-lg-block">
                 {% if session['_id'] %}
-                <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
+                <span class="nav-link pr-0"><a href="{{url_for('profile', user=session['_id'])}}" class="nav-link">My
+                        Profile</a> / <a href="{{url_for('logout')}}" class="nav-link pr-0">Logout</a></span>
                 {% else %}
-                <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
+                <span class="nav-link pr-0"><a href="{{url_for('login')}}" class="nav-link">Login</a> / <a
+                        href="{{url_for('signup')}}" class="nav-link pr-0">Signup</a></span>
                 {% endif %}
             </div>
         </nav>
     </header>
-    
+
     <!--HERE FOLLOWS CONTENT OF OTHER PAGES-->
     {% block content %} {% endblock %}
-    
+
     <!--FOOTER-->
     <footer class="container-fluid pr-0 pl-0">
         <div class="row footer-settings justify-content-md-center">
@@ -96,7 +105,8 @@
                         </a>
                     </li>
                     <li class="list-inline-item">
-                        <a href="https://www.youtube.com/channel/UCeQJ67pI4WkGi-ZA0eelhfg?view_as=subscriber" target="_blank">
+                        <a href="https://www.youtube.com/channel/UCeQJ67pI4WkGi-ZA0eelhfg?view_as=subscriber"
+                            target="_blank">
                             <i class="fab fa-youtube fa-2x" aria-hidden="true"></i>
                             <span class="sr-only">Youtube</span>
                         </a>
@@ -105,38 +115,44 @@
             </div>
         </div>
     </footer>
-    
+
     <!--HERE I IMPORTED BOOTSTRAPS JAVASCRIPT SOURCE: https://getbootstrap.com/docs/4.3/getting-started/download/-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
     <!--HERE I IMPORT FONT AWESOME TO USE FOR ICONS SOURCE: https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use-->
     <script src="https://kit.fontawesome.com/5d737143b8.js" crossorigin="anonymous"></script>
 
     <script>
         /* This code is used to insert a piece of text into a textarea at the current position of the cursor */
-        function inyectarTexto(elemento,valor){
-            var elemento_dom=document.getElementsByName(elemento)[0];
-            if(document.selection){
+        function inyectarTexto(elemento, valor) {
+            var elemento_dom = document.getElementsByName(elemento)[0];
+            if (document.selection) {
                 elemento_dom.focus();
-                sel=document.selection.createRange();
-                sel.text=valor;
+                sel = document.selection.createRange();
+                sel.text = valor;
                 return;
-            }if(elemento_dom.selectionStart||elemento_dom.selectionStart=="0"){
-                var t_start=elemento_dom.selectionStart;
-                var t_end=elemento_dom.selectionEnd;
-                var val_start=elemento_dom.value.substring(0,t_start);
-                var val_end=elemento_dom.value.substring(t_end,elemento_dom.value.length);
-                elemento_dom.value=val_start+valor+val_end;
-            }else{
-                elemento_dom.value+=valor;
+            } if (elemento_dom.selectionStart || elemento_dom.selectionStart == "0") {
+                var t_start = elemento_dom.selectionStart;
+                var t_end = elemento_dom.selectionEnd;
+                var val_start = elemento_dom.value.substring(0, t_start);
+                var val_end = elemento_dom.value.substring(t_end, elemento_dom.value.length);
+                elemento_dom.value = val_start + valor + val_end;
+            } else {
+                elemento_dom.value += valor;
             }
         }
 
         /* This checks if the file that the user is trying to upload is too big */
-        $('#cv_file').on('change',function(){
-            if(this.files[0].size > 1048576){
+        $('#cv_file').on('change', function () {
+            if (this.files[0].size > 1048576) {
                 $('#fileToBig').modal('show');
                 $(this).val('');
                 $(this).next('.custom-file-label').html("Choose file");
@@ -146,7 +162,8 @@
             }
         })
     </script>
-    
+
 
 </body>
+
 </html>
