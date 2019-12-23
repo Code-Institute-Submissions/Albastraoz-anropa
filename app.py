@@ -99,11 +99,11 @@ def contact():
 # SEND EMAIL FROM CONTACT FORM
 @app.route('/contact/send_email', methods=['POST'])
 def send_email():
-    contact_name = request.form['contact_name']
-    contact_email = request.form['contact_email']
-    contact_message = request.form['contact_message']
+    contact_name = request.form.get('contact_name')
+    contact_email = request.form.get('contact_email')
+    contact_message = request.form.get('contact_message')
     msg = Message(contact_name+', contact form', sender=contact_email, recipients=['rkaal7@gmail.com'])
-    msg.html = 'Contact name:'+contact_name+'<br>Contact email:'+contact_email+'<br>Message:<br>'+contact_message
+    msg.html = 'Contact name:{}<br>Contact email:{}<br>Message:<br>{}'.format(contact_name, contact_email, contact_message)
     mail.send(msg)
     flash('Your email has been send!')
     return render_template("contact.html")
