@@ -53,6 +53,7 @@ def view_vacancy(vacancy_id):
     one_vacancies = mongo.db.vacancies.find_one({'_id': ObjectId(vacancy_id)})
     if request.method == 'POST':
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+        print(one_user)
         msg = Message('Job application', sender=one_user.email, recipients=['rkaal7@gmail.com'])
         msg.html = 'Applicants name:{}<br>Applicants email:{}<br>Vacancy:<br>{}'.format(one_user.name, one_user.email, one_vacancies.vacancy_title)
         mail.send(msg)
@@ -123,6 +124,7 @@ def profile(user):
     if request.method == 'POST':
         all_users = mongo.db.users.find()
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+        # Check which form is used
         if request.form['name']:
             session['tab'] = 'profile_tab'
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
@@ -133,7 +135,8 @@ def profile(user):
                 'country' : request.form['country']
             }})
             flash('Your information has been updated succesfully!')
-            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return redirect(url_for('profile', tab=session['tab'], user=one_user, users=all_users))#render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+        # Check which form is used
         if request.form['current_job']:
             session['tab'] = 'cv_tab'
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
@@ -147,7 +150,7 @@ def profile(user):
                     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                     {'cv_file' : cv_file.filename}})
             flash('Your information has been updated succesfully!')
-            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return redirect(url_for('profile', tab=session['tab'], user=one_user, users=all_users))#render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         all_users = mongo.db.users.find()
