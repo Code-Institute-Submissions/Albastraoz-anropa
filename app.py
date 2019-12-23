@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 # CONNECTION TO DATABASE
 app.config['MONGO_DBNAME'] = 'anropa'
-app.config["MONGO_URI"] = 'mongodb://localhost/anropa'
-app.secret_key = 'y50jjnSuQp'
+app.config["MONGO_URI"] = 'mongodb+srv://adminlogin:y50jjnSuQp@cluster0-hmyjl.azure.mongodb.net/anropa?retryWrites=true&w=majority'
+app.config["SECRET_KEY"] = '75TaAE0XCl'
 
 mongo = PyMongo(app)
 
@@ -195,4 +195,7 @@ def logout():
     return redirect(url_for('home'))
 
 # Run app
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host=os.environ.get('IP'),
+    port=int(os.environ.get('PORT')),
+    debug=True)
