@@ -173,10 +173,13 @@ def delete_file(del_file):
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     all_users = mongo.db.users.find()
     session['tab'] = 'cv_tab'
-
+    # Find files_id to delete both in fs.files & fs.chunks
+    chunks_id = mongo.db.fs.files.find_one({'filename': del_file})
+    mongo.db.fs.chunks.delete_many({'files_id': ObjectId(chunks_id['_id'])})
+    mongo.db.fs.files.delete_one({'filename': del_file})
     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$pull":
                     {'cv_file' : del_file}})
-
+    flash('Your file has been removed!')
     return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # ADMIN AREA
