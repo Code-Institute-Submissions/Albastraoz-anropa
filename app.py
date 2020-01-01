@@ -1,4 +1,5 @@
 import os
+import env
 from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
@@ -7,10 +8,14 @@ import bcrypt
 
 app = Flask(__name__)
 
+# MAIN FLASK SETTINGS
+app.config["SERVER_NAME"] = os.environ.get('SERVER_NAME')
+app.config["DEBUG"] = True
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
+
 # CONNECTION TO DATABASE
 app.config["MONGO_DBNAME"] = os.environ.get('MONGO_DBNAME')
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 
 # EMAIL SERVICE SETTINGS
 app.config["MAIL_SERVER"] = os.environ.get('MAIL_SERVER')
@@ -124,7 +129,7 @@ def profile(user):
         all_users = mongo.db.users.find()
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         # Check which form is used
-        if request.form['name']:
+        if 'name' in request.form:
             session['tab'] = 'profile_tab'
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                 {'name' : request.form['name'], 
@@ -136,7 +141,7 @@ def profile(user):
             flash('Your information has been updated succesfully!')
             return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
         # Check which form is used
-        if request.form['current_job']:
+        elif 'current_job' in request.form:
             session['tab'] = 'cv_tab'
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                 {'current_job' : request.form['current_job']}})
@@ -146,7 +151,7 @@ def profile(user):
                 # Check if filename is not empty
                 if cv_file.filename != "":
                     mongo.save_file(cv_file.filename, cv_file)
-                    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
+                    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
                     {'cv_file' : cv_file.filename}})
             flash('Your information has been updated succesfully!')
             return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
@@ -161,6 +166,18 @@ def profile(user):
 @app.route('/file/<filename>')
 def file(filename):
     return mongo.send_file(filename)
+
+# Delete a file
+@app.route('/file/delete/<del_file>')
+def delete_file(del_file):
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    all_users = mongo.db.users.find()
+    session['tab'] = 'cv_tab'
+
+    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$pull":
+                    {'cv_file' : del_file}})
+
+    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
 # ADMIN AREA
 # Add vacancy
@@ -201,6 +218,9 @@ def signup():
         existing_user = users.find_one({'email' : request.form['email']})
         # If no match is found it will continue and create user
         if existing_user is None:
+            if request.form['password'] != request.form['password2']:
+                flash('Passwords are not the same!')
+                return render_template("signup.html")
             # Hash password for security
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass, 'admin' : False})
@@ -222,6 +242,6 @@ def logout():
 
 # Run app
 if __name__ == '__main__':
-    app.run(host=os.environ.get('IP'),
-    port=int(os.environ.get('PORT')),
-    debug=True)
+    app.run()
+
+# host=os.environ.get('IP'), port=int(os.environ.get('PORT')), debug=True
