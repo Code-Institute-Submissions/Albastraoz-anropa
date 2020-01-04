@@ -206,15 +206,60 @@ def login():
         user_login = users.find_one({'email' : request.form['email']})
         # Continue if not
         if user_login:
-            if user_login['verified'] == True:
-                # Check if password is correct
-                if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
+            # Check if password is correct
+            if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
+                if user_login['verified'] == True:
                     session['_id'] = str(user_login['_id'])
                     session['tab'] = 'profile_tab'
                     return redirect(url_for('profile', user=session['_id']))
-            flash('Account is not verified! Please check your email or resend a confirmation email <a href="/request-activation">here</a>.')
+                flash('Account is not verified! Please check your email or resend a confirmation email <a href="/request-activation">here</a>.')
         flash('Invalid username/password combination')
     return render_template("login.html")
+
+# Request to reset password
+@app.route('/request-password-reset', methods=['POST', 'GET'])
+def request_password_reset():
+    if request.method == 'POST':
+        users = mongo.db.users
+        email = request.form['email-password']
+        # Check if entered email already exists in database
+        existing_user = users.find_one({'email' : email})
+        # If no match is found it will continue and send email to reset password
+        if existing_user:
+            # Create token for password reset
+            token = st.dumps(email, salt='reset-password')
+
+            # Send confirmation email
+            msg = Message('Anropa Password Reset', recipients=[email])
+            link = url_for('reset_password', token=token, _external=True)
+            msg.html = 'You send in a request to reset your password.<br>If this was not you ignore this email.<br>If this was you, here is your recovery link (valid for 2 hours):<br> {}'.format(link)
+            mail.send(msg)
+
+            flash('Recovery link send to your email address.')
+        flash('That email does not exists!')
+    return render_template("password_reset.html")
+
+# Reset password
+@app.route('/reset/<token>', methods=['POST', 'GET'])
+def reset_password(token):
+    try:
+        email = st.loads(token, salt='reset-password', max_age=7200)
+    except SignatureExpired:
+        return 'Reset password link expired.'#render_template("email_confirmation_denied.html")
+    token = token
+    email = st.loads(token, salt='reset-password')
+    if request.method == 'POST':
+        if request.form['reset-password'] != request.form['reset-password2']:
+            flash('Passwords are not the same!')
+            return redirect(url_for('reset_password', token=token))
+
+        # Hash password for security
+        hashpass = bcrypt.hashpw(request.form['reset-password'].encode('utf-8'), bcrypt.gensalt())
+
+        mongo.db.users.update_one({'email' : email}, {"$set":
+            {'password' : hashpass }})
+        flash('Your password has been reset! You can <a href="/login">login here</a>.')
+    return render_template("password_reset_form.html", token=token)
 
 # Signup new user
 @app.route('/signup', methods=['POST', 'GET'])
@@ -282,7 +327,7 @@ def confirm_email_form():
 @app.route('/confirm/<token>')
 def confirm_email(token):
     try:
-        email = st.loads(token, salt='confirm_email', max_age=10)#86400
+        email = st.loads(token, salt='confirm_email', max_age=86400)
     except SignatureExpired:
         return render_template("email_confirmation_denied.html")
     
