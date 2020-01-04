@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="nav-whitespace"></div>
+<div class="container">
+    <!--Title-->
+    <div class="row">
+        <div class="col-12">
+            <h1>ACCOUNT ACTIVASION</h1>
+        </div>
+        <div class="col-12 mt-3 mb-3">
+            <div class="alert alert-danger" role="alert">
+                <h3>Your account has NOT been activated!</h3>
+                <p>Your activationlink has expired and therefore your account is not activated!</p>
+                <p>You can request a new activationlink by following <a href="{{url_for('confirm_email_form')}}">THIS LINK</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

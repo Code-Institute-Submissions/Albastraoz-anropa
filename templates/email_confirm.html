@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="nav-whitespace"></div>
+<div class="container">
+    <!--Title-->
+    <div class="row">
+        <div class="col-12">
+            <h1>REQUEST ACCOUNT ACTIVASION LINK</h1>
+        </div>
+        <div class="col-12 mt-3 mb-3">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ messages[0] }}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <form method=POST action="{{ url_for('confirm_email_form')}}">
+                <div class="form-group">
+                    <label for="email-link">Your email address</label>
+                    <input type="email" class="form-control" id="email-link" name="email-link" aria-describedby="emailHelp"
+                        placeholder="Enter email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Send link</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="nav-whitespace"></div>
+<div class="container">
+    <!--Title-->
+    <div class="row">
+        <div class="col-12">
+            <h1>ACCOUNT ACTIVASION</h1>
+        </div>
+        <div class="col-12 mt-3 mb-3">
+            <div class="alert alert-success" role="alert">
+                <h3>Congratulations! Your account has been activated successfully!</h3>
+                <p>You will be redirected to the login page after 5 seconds or you can <a href="{{url_for('login')}}">click here</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>    
+    window.setTimeout(function(){
+        window.location.href = "{{url_for('login')}}";
+        }, 5000);
+</script>
+
+{% endblock %}

@@ -2,6 +2,7 @@ import os
 import env
 from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import bcrypt
@@ -30,6 +31,8 @@ app.config["MAIL_ASCII_ATTACHMENTS"] = False
 
 mongo = PyMongo(app)
 mail = Mail(app)
+
+st = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 # WEB PAGES
 # Homepage
@@ -133,13 +136,14 @@ def profile(user):
             session['tab'] = 'profile_tab'
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                 {'name' : request.form['name'], 
+                'phone' : request.form['phone'],
                 'address' : request.form['address'], 
                 'city' : request.form['city'], 
                 'zipcode' : request.form['zipcode'],
                 'country' : request.form['country']
             }})
             flash('Your information has been updated succesfully!')
-            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return redirect(url_for('profile', user=session['_id']))
         # Check which form is used
         elif 'current_job' in request.form:
             session['tab'] = 'cv_tab'
@@ -154,7 +158,7 @@ def profile(user):
                     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
                     {'cv_file' : cv_file.filename}})
             flash('Your information has been updated succesfully!')
-            return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+            return redirect(url_for('profile', user=session['_id']))
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         all_users = mongo.db.users.find()
@@ -170,8 +174,6 @@ def file(filename):
 # Delete a file
 @app.route('/file/delete/<del_file>')
 def delete_file(del_file):
-    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    all_users = mongo.db.users.find()
     session['tab'] = 'cv_tab'
     # Find files_id to delete both in fs.files & fs.chunks
     chunks_id = mongo.db.fs.files.find_one({'filename': del_file})
@@ -180,7 +182,7 @@ def delete_file(del_file):
     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$pull":
                     {'cv_file' : del_file}})
     flash('Your file has been removed!')
-    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
+    return redirect(url_for('profile', user=session['_id']))
 
 # ADMIN AREA
 # Add vacancy
@@ -204,11 +206,13 @@ def login():
         user_login = users.find_one({'email' : request.form['email']})
         # Continue if not
         if user_login:
-            # Check if password is correct
-            if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
-                session['_id'] = str(user_login['_id'])
-                session['tab'] = 'profile_tab'
-                return redirect(url_for('profile', user=session['_id']))
+            if user_login['verified'] == True:
+                # Check if password is correct
+                if bcrypt.hashpw(request.form['password'].encode('utf-8'), user_login['password']) == user_login['password']:
+                    session['_id'] = str(user_login['_id'])
+                    session['tab'] = 'profile_tab'
+                    return redirect(url_for('profile', user=session['_id']))
+            flash('Account is not verified! Please check your email or resend a confirmation email <a href="/request-activation">here</a>.')
         flash('Invalid username/password combination')
     return render_template("login.html")
 
@@ -224,15 +228,68 @@ def signup():
             if request.form['password'] != request.form['password2']:
                 flash('Passwords are not the same!')
                 return render_template("signup.html")
+                
+            # Create token for email verification
+            email = request.form['email']
+            token = st.dumps(email, salt='confirm_email')
+
             # Hash password for security
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['name'], 'email' : request.form['email'], 'password' : hashpass, 'admin' : False})
-            registered_user = users.find_one({'email' : request.form['email']})
-            session['_id'] = str(registered_user['_id'])
-            session['tab'] = 'profile_tab'
-            return redirect(url_for('profile', user=session['_id']))
+
+            # Insert user into database
+            users.insert({'name' : request.form['name'], 'email' : email, 'verified' : False, 'password' : hashpass, 'admin' : False})
+
+            # Send confirmation email
+            msg = Message('Anropa Confirm Email', recipients=[email])
+            link = url_for('confirm_email', token=token, _external=True)
+            msg.html = 'You need to activate your account at Anropa.<br> Here is your confirmation link: {}'.format(link)
+            mail.send(msg)
+
+            return redirect(url_for('email_confirmation_page'))
         flash('That email already exists!')
     return render_template("signup.html")
+
+# This page is rendered after you registered your account successfully
+@app.route('/activate-account')
+def email_confirmation_page():
+    return render_template("email_confirm_send.html")
+
+# Send a new activation link page
+@app.route('/request-activation', methods=['POST', 'GET'])
+def confirm_email_form():
+    if request.method == 'POST':
+        users = mongo.db.users
+        email = request.form['email-link']
+        # Check if entered email already exists in database
+        existing_user = users.find_one({'email' : email})
+        # If no match is found it will continue and create user
+        if existing_user:
+            if existing_user['verified'] == False:
+                # Create token for email verification
+                token = st.dumps(email, salt='confirm_email')
+
+                # Send confirmation email
+                msg = Message('Anropa Confirm Email', recipients=[email])
+                link = url_for('confirm_email', token=token, _external=True)
+                msg.html = 'You need to activate your account at Anropa.<br> Here is your confirmation link:<br> {}'.format(link)
+                mail.send(msg)
+                return redirect(url_for('email_confirmation_page'))
+            flash('Your account has already been verified please <a href="/login">login here</a>.')
+        flash('That email does not exists!')
+    return render_template("email_confirm.html")
+
+# Confirm email address
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = st.loads(token, salt='confirm_email', max_age=10)#86400
+    except SignatureExpired:
+        return render_template("email_confirmation_denied.html")
+    
+    email = st.loads(token, salt='confirm_email')
+    mongo.db.users.update_one({'email' : email}, {"$set":
+        {'verified' : True }})
+    return render_template("email_confirmation_success.html")
 
 # Log user out from website
 @app.route('/logout')
