@@ -25,8 +25,13 @@
                 {% endif %}
             </li>
             {% if user.admin %}
+            {% if tab == 'users_tab' %}
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#users_tab">View users</a>
+                <a class="nav-link active" data-toggle="tab" href="#users_tab">Users</a>
+                {% else %}
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#users_tab">Users</a>
+                {% endif %}
             </li>
             {% if tab == 'vacancy_tab' %}
             <li class="nav-item">
@@ -382,7 +387,7 @@
                         </form>
                         {% if user.cv_file %}
                         {% for file in user.cv_file %}
-                        <a href="/file/{{file}}">{{ file }}</a><a href="{{ url_for('delete_file', del_file=file )}}">Delete</a><br>
+                        <a href="/file/{{file}}" target="_blank">{{ file[40:] }}</a><a href="{{ url_for('delete_file', del_file=file )}}">Delete</a><br>
                         {% endfor %}
                         {% endif %}
                         <div class="tab-bottom-spacing"></div>
@@ -413,16 +418,51 @@
                     <!-- Here starts the Admin only area -->
                     {% if user.admin %}
                     <!-- View all users -->
+                    {% if tab == 'users_tab' %}
+                    <div id="users_tab" class="container tab-pane active"><br>
+                    {% else %}
                     <div id="users_tab" class="container tab-pane fade"><br>
-                        {% for a_user in users %}
-                        <h3>{{ a_user.name }}</h3>
-                        <p>Profession: {{ a_user.current_job }}</p>
-                        <p>{{ a_user.email }}</p>
-                        {% if a_user.cv_file %}
-                        <a href="/file/{{user.cv_file}}">Download CV</a><br>
+                    {% endif %}
+                        <form method="POST" action="{{ url_for('find_user')}}">
+                            <input type="text" class="form-control search-bar" id="search" name="search" placeholder="Find user...">
+                            <button type="submit" class="btn btn-primary align-top">Search</button>
+                            {% if result %}
+                            <a href="{{url_for('profile', user=session['_id'])}}" class="btn btn-primary align-top float-right">Show all</a>
+                            {% endif %}
+                        </form>
+                        {% if result %}
+                            {% for user in result %}
+                            <hr>
+                            <h3 class="mt-2">{{ user.name }}</h3>
+                            <p><i>User ID:</i> <strong>{{ user._id }}</strong><br>
+                            <i>Is account verified:</i> <strong>{{ user.verified }}</strong><br>
+                            <i>Email:</i> <strong>{{ user.email }}</strong><br>
+                            <i>Phone:</i> <strong>{{ user.phone }}</strong></p>
+                            <p><i>Address:</i><br>
+                            <strong>{{ user.address }}<br>
+                            {{ user.city }} {{ user.zipcode }}<br>
+                            {{ user.country }}</strong></p>
+                            <p><i>Current Position:</i> <strong>{{ user.current_job }}</strong><br>
+                            <strong>Files:</strong><br>             
+                            {% if user.cv_file %}
+                                {% for file in user.cv_file %}
+                                <a href="/file/{{file}}" target="_blank">{{ file }}</a><br>
+                                {% endfor %}
+                            {% endif %}
+                            </p>   
+                            {% endfor %}
+                        {% else %}
+                            {% for user in users[:100] %}
+                            <hr>
+                            <h5 class="mt-2">{{ user.name }}</h5>
+                            <p>{{ user.email }}</p>
+                            {% if user.cv_file %}
+                                {% for file in user.cv_file %}
+                                <a href="/file/{{file}}" target="_blank">{{ file[40:] }}</a><br>
+                                {% endfor %}
+                            {% endif %}
+                            {% endfor %}
                         {% endif %}
-                        <hr>
-                        {% endfor %}
                         <div class="tab-bottom-spacing"></div>
                     </div>
 
@@ -432,6 +472,7 @@
                         {% else %}
                         <div id="vacancies_tab" class="container tab-pane fade"><br>
                             {% endif %}
+
                             {% with messages = get_flashed_messages() %}
                             {% if messages %}
                             <div class="alert alert-success" role="alert">

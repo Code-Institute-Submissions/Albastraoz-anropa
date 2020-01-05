@@ -217,6 +217,11 @@ a:hover {
     height: 25px;
 }
 
+.search-bar {
+    display: inline-block;
+    max-width: 200px;
+}
+
 /* EDIT PAGE STYLING */
 .html-edit-schortcuts {
     float: right;

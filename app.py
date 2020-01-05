@@ -1,5 +1,7 @@
 import os
 import env
+import random
+import string
 from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
@@ -33,6 +35,7 @@ mongo = PyMongo(app)
 mail = Mail(app)
 
 st = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # WEB PAGES
 # Homepage
@@ -125,6 +128,17 @@ def send_email():
     return render_template("contact.html")
 
 # ACCOUNT FUNCTIONALITY
+# Check for secure files
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# Location to files
+@app.route('/file/<filename>')
+def file(filename):
+    return mongo.send_file(filename)
+
 # Load profile page
 @app.route('/profile/<user>', methods=["GET", "POST"])
 def profile(user):
@@ -154,9 +168,12 @@ def profile(user):
                 cv_file = request.files['cv_file']
                 # Check if filename is not empty
                 if cv_file.filename != "":
-                    mongo.save_file(cv_file.filename, cv_file)
+                    lettersAndDigits = string.ascii_letters + string.digits
+                    filenamegen = ''.join(random.choice(lettersAndDigits) for i in range(40)) + cv_file.filename
+
+                    mongo.save_file(filenamegen, cv_file)
                     mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
-                    {'cv_file' : cv_file.filename}})
+                    {'cv_file' : filenamegen}})
             flash('Your information has been updated succesfully!')
             return redirect(url_for('profile', user=session['_id']))
     if session['_id'] is not None:
@@ -165,11 +182,6 @@ def profile(user):
         return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
     else:
         return redirect(url_for('home'))
-
-# Location to files
-@app.route('/file/<filename>')
-def file(filename):
-    return mongo.send_file(filename)
 
 # Delete a file
 @app.route('/file/delete/<del_file>')
@@ -185,6 +197,16 @@ def delete_file(del_file):
     return redirect(url_for('profile', user=session['_id']))
 
 # ADMIN AREA
+# Search for user
+@app.route('/search-user', methods=['POST'])
+def find_user():
+    session['tab'] = 'users_tab'
+    search = request.form['search']
+    one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
+    all_users = mongo.db.users.find()
+    search_user = mongo.db.users.find({'email': search })
+    return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users, result=search_user)
+
 # Add vacancy
 @app.route('/add_vacancy', methods=['POST'])
 def add_vacancy():
