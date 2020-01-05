@@ -245,8 +245,8 @@ def reset_password(token):
     try:
         email = st.loads(token, salt='reset-password', max_age=7200)
     except SignatureExpired:
-        return 'Reset password link expired.'#render_template("email_confirmation_denied.html")
-    token = token
+        return render_template("password_reset_denied.html")
+    
     email = st.loads(token, salt='reset-password')
     if request.method == 'POST':
         if request.form['reset-password'] != request.form['reset-password2']:
@@ -256,6 +256,7 @@ def reset_password(token):
         # Hash password for security
         hashpass = bcrypt.hashpw(request.form['reset-password'].encode('utf-8'), bcrypt.gensalt())
 
+        # Update password by finding user by email.
         mongo.db.users.update_one({'email' : email}, {"$set":
             {'password' : hashpass }})
         flash('Your password has been reset! You can <a href="/login">login here</a>.')

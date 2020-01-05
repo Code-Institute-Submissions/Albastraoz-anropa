@@ -22,6 +22,8 @@
                     <label for="name">Name*</label>
                     <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp"
                         placeholder="Full name" required>
+                </div>
+                <div class="form-group">
                     <label for="email">Email address*</label>
                     <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
                         placeholder="Enter email" required>
@@ -30,10 +32,13 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password*</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                    <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordReq" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password"
                         required>
+                    <small id="passwordReq" class="form-text text-muted">Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.</small>
+                </div>
+                <div class="form-group">
                     <label for="password">Retype password*</label>
-                    <input type="password" class="form-control" id="password2" name="password2" placeholder="Retype password"
+                    <input type="password" class="form-control" id="password2" name="password2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Retype password"
                         required>
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
