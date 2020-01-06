@@ -392,8 +392,11 @@
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                         {% if user.cv_file %}
+                        <hr>
                         {% for file in user.cv_file %}
-                        <a href="/file/{{file}}" target="_blank">{{ file[40:] }}</a><a href="{{ url_for('delete_file', del_file=file )}}">Delete</a><br>
+                        <div class="pb-2">
+                        <a href="/file/{{file}}" target="_blank" style="font-size: 18px;">{{ file[40:] }}</a><a href="{{ url_for('delete_file', del_file=file )}}" class="btn btn-danger btn-sm ml-2">Delete</a>
+                        </div>
                         {% endfor %}
                         {% endif %}
                         <div class="tab-bottom-spacing"></div>
