@@ -364,9 +364,15 @@
                         {% endif %}
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
+                        {% if messages[0] == 'We only accept .png, .jpg, .jpeg, .gif, .pdf, .doc, .docx, .ppt, .pptx, .pps, .ppsx, .odt, .xls and .xlsx files.' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages[0] }}
+                        </div>
+                        {% else %}
                         <div class="alert alert-success" role="alert">
                             {{ messages[0] }}
                         </div>
+                        {% endif %}
                         {% endif %}
                         {% endwith %}
                         <form method="POST" action="{{ url_for('profile', user=session['_id'])}}"

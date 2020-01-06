@@ -35,7 +35,11 @@ mongo = PyMongo(app)
 mail = Mail(app)
 
 st = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+# Custom error page
+@app.errorhandler(404)
+def error404(error):
+    return render_template("404_error.html"), 404
 
 # WEB PAGES
 # Homepage
@@ -128,12 +132,6 @@ def send_email():
     return render_template("contact.html")
 
 # ACCOUNT FUNCTIONALITY
-# Check for secure files
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 # Location to files
 @app.route('/file/<filename>')
 def file(filename):
@@ -166,15 +164,21 @@ def profile(user):
             # Check if file is chosen
             if 'cv_file' in request.files:
                 cv_file = request.files['cv_file']
+                namefile = cv_file.filename
                 # Check if filename is not empty
                 if cv_file.filename != "":
-                    lettersAndDigits = string.ascii_letters + string.digits
-                    filenamegen = ''.join(random.choice(lettersAndDigits) for i in range(40)) + cv_file.filename
+                    if namefile.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.pdf', '.doc', '.docx', '.ppt', '.pptx', '.pps', '.ppsx', '.odt', '.xls', '.xlsx')):
+                        # Generate a unique name + the actual filename to prevent database mixup
+                        lettersAndDigits = string.ascii_letters + string.digits
+                        filenamegen = ''.join(random.choice(lettersAndDigits) for i in range(40)) + cv_file.filename
 
-                    mongo.save_file(filenamegen, cv_file)
-                    mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
-                    {'cv_file' : filenamegen}})
-            flash('Your information has been updated succesfully!')
+                        # Save the file
+                        mongo.save_file(filenamegen, cv_file)
+                        mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
+                        {'cv_file' : filenamegen}})
+                        flash('Your file has been added to your profile.')
+                        return redirect(url_for('profile', user=session['_id']))
+                    flash('We only accept .png, .jpg, .jpeg, .gif, .pdf, .doc, .docx, .ppt, .pptx, .pps, .ppsx, .odt, .xls and .xlsx files.')
             return redirect(url_for('profile', user=session['_id']))
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
