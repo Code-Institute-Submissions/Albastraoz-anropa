@@ -1,5 +1,4 @@
 import os
-import env
 import random
 import string
 from flask import Flask, render_template, redirect, session, request, url_for, flash
@@ -9,11 +8,12 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import bcrypt
 
+# Commented out since this is only for local testing
+# import env
+
 app = Flask(__name__)
 
-# MAIN FLASK SETTINGS
-app.config["SERVER_NAME"] = os.environ.get('SERVER_NAME')
-app.config["DEBUG"] = True
+# SECRET KEY
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
 
 # CONNECTION TO DATABASE
@@ -82,7 +82,7 @@ def view_vacancy(vacancy_id):
 # Delete a specific vacancy
 @app.route('/delete_vacancy/<vacancy_id>')
 def delete_vacancy(vacancy_id):
-    mongo.db.vacancies.remove({'_id': ObjectId(vacancy_id)})
+    mongo.db.vacancies.delete_one({'_id': ObjectId(vacancy_id)})
     return redirect(url_for('vacancies'))
 
 # Edit a specific vacancy
@@ -218,7 +218,7 @@ def add_vacancy():
     vacancy = mongo.db.vacancies
     all_users = mongo.db.users.find()
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
-    vacancy.insert({'vacancy_title' : request.form['add_vacancy_title'], 'vacancy_description' : request.form['add_vacancy_description']})
+    vacancy.insert_one({'vacancy_title' : request.form['add_vacancy_title'], 'vacancy_description' : request.form['add_vacancy_description']})
     flash('Vacancy added to the database!')
     return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users)
 
@@ -309,7 +309,7 @@ def signup():
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
 
             # Insert user into database
-            users.insert({'name' : request.form['name'], 'email' : email, 'verified' : False, 'password' : hashpass, 'admin' : False})
+            users.insert_one({'name' : request.form['name'], 'email' : email, 'verified' : False, 'password' : hashpass, 'admin' : False})
 
             # Send confirmation email
             msg = Message('Anropa Confirm Email', recipients=[email])
@@ -374,6 +374,4 @@ def logout():
 
 # Run app
 if __name__ == '__main__':
-    app.run()
-
-# host=os.environ.get('IP'), port=int(os.environ.get('PORT')), debug=True
+    app.run(host=os.environ.get('IP'), port=int(os.environ.get('PORT')), debug=False)
