@@ -61,8 +61,14 @@ Features planned, implemented and outlined for later development
 - Bootstrap - HTML, CSS Framework
     - Grid System - Columns and Rows
     - Icons
-- User register/login databse
+- User register/login database
 - Vacancy database
+- Email verification when registering
+- Password reset functionality
+- Multiple file uploads
+- Search function for user database (admin only)
+- CMS system for content (admin)
+- Search function for vacancies
 - Responsive design - Mobile First
 - UX elements
     - User Flow
@@ -85,8 +91,13 @@ Features planned, implemented and outlined for later development
     - CRUD for users
 - Bootstrap - HTML, CSS Framework
     - Grid System - Columns and Rows
-    - Cards
     - Icons
+- User register/login database
+- Vacancy database
+- Email verification when registering
+- Password reset functionality
+- Multiple file uploads
+- Search function for user database (admin only)
 - Responsive design - Mobile First
 - UX elements
     - User Flow
@@ -98,10 +109,9 @@ Features planned, implemented and outlined for later development
 - Deployed - Hosted on Heroku
 
 ### Features Left to Implement
-- Email verification when registering
-- Multiple file uploads
+- CMS system for content (admin)
 - Search function for vacancies
-- Search function for user database (admin only)
+
 
 ## Technologies Used
 
@@ -154,8 +164,8 @@ Preview was send regularly to people within my social circle and asked for testi
 ### Dev tools
 - Everything has been tested and works correctly except for some minor bugs.
 - Know bugs and will be addressed:
-    - Homepage navbar's width is too wide for mobile devices in dev tools.
-    - File uploads are not being deleted as of right now when a new file is uploaded.
+    - Still need a max upload size for all files together.
+    - Search function for users as of right now only works my searching for a specific email address.
 
 ### Coding error testing
 After complete product start to addres coding errors:
