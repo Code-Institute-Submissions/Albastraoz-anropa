@@ -382,6 +382,7 @@
                                 <input type="text" class="form-control" id="current_job" name="current_job"
                                     value="{{ user.current_job }}" placeholder="eg Mailman">
                             </div>
+                            {% if user.cv_file|length < 10 %}
                             <div class="form-group">
                                 <label for="cv_file">Upload files - <i>max 1MB</i></label>
                                 <div class="custom-file">
@@ -389,6 +390,9 @@
                                     <label class="custom-file-label" for="cv_file">Choose file</label>
                                 </div>
                             </div>
+                            {% else %}
+                            <p>You have uploaded the maximum number of 10 files, please remove one to upload a new file.</p>
+                            {% endif %}
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                         {% if user.cv_file %}
