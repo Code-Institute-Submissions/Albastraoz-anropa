@@ -3,7 +3,13 @@
 @import url('https://fonts.googleapis.com/css?family=Krona+One|Roboto&display=swap');
 
 /*---------- GENERAL STYLING ----------*/
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
+    margin: 0 0 771px;
     font-family: 'Roboto', sans-serif;
     background-color: #e2e2e2;
 }
@@ -77,6 +83,11 @@ a:hover {
 }
 
 /* FOOTER */
+footer {
+    position: absolute;
+    bottom: 0;
+}
+
 .footer-settings {
     background-color: #1A76BC;
     color: #fafafa;
@@ -243,6 +254,9 @@ a:hover {
 
 /* RESPONSIVE STYLING */
 @media (min-width: 768px) {
+    body {
+        margin: 0 0 377px;
+    }
     h1 {
         font-size: 32px;
     }
