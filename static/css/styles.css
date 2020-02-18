@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    margin: 0 0 771px;
+    margin: 0 0 804px;
     font-family: 'Roboto', sans-serif;
     background-color: #e2e2e2;
 }
@@ -191,11 +191,6 @@ footer {
 }
 
 /* PAGES POSITIONING */
-.page-image-div {
-    max-height: 400px;
-    overflow: hidden;
-}
-
 .page-images {
     width: 100%;
 }
@@ -253,6 +248,12 @@ footer {
 }
 
 /* RESPONSIVE STYLING */
+@media (min-width: 576px) {
+    body {
+        margin: 0 0 771px;
+    }
+}
+
 @media (min-width: 768px) {
     body {
         margin: 0 0 377px;
