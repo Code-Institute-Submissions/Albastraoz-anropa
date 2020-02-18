@@ -9,7 +9,7 @@ from bson.objectid import ObjectId
 import bcrypt
 
 # Commented out since this is only for local testing
-# import env
+import env
 
 app = Flask(__name__)
 

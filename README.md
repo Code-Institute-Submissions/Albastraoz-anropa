@@ -21,7 +21,7 @@ Expected users of the website are people looking for a job and companies looking
 Also the employees of the job agencie will use the website a lot to post, edit and delete vacancies plus look for user information.
 
 ### User Stories
-1. Companie looking for new staff
+1. Company looking for new staff
 2. Jobless person waiting for their new job adventure
 3. Owner of website to make the user database automated
 4. Owner of website to create new vacancies
@@ -29,7 +29,7 @@ Also the employees of the job agencie will use the website a lot to post, edit a
 ### Design
 ![Website Logo - Anropa](/static/images/logo.png)
 - Colour scheme is blue with grey which was the clients own choice
-    - Main blue colour:   ![#1A76BC](https://placehold.it/15/#1A76BC/000000?text=+) `#1A76BC`
+    - Main blue colour:   ![#1A76BC](https://placehold.it/15/1A76BC/000000?text=+) `#1A76BC`
     - Other grey colours have been used to create visible difference
     - Black and white for balance
 - [Custom designed logo](/static/images/logo.png) created using the following font: 
