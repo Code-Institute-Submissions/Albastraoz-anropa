@@ -444,6 +444,10 @@
                             {% endif %}
                         </form>
                         {% if result %}
+                            {% if result.count() == 0 %}
+                                <hr>
+                                <p>We have not found any records with that search term, remember that the search function goes through the following fields: <strong>name</strong>, <strong>email</strong>, <strong>country</strong>, <strong>current position</strong>.</p>
+                            {% endif %}
                             {% for user in result %}
                             <hr>
                             <h3 class="mt-2">{{ user.name }}</h3>
@@ -459,21 +463,31 @@
                             <strong>Files:</strong><br>             
                             {% if user.cv_file %}
                                 {% for file in user.cv_file %}
-                                <a href="/file/{{file}}" target="_blank">{{ file }}</a><br>
+                                <a href="/file/{{file}}" target="_blank">{{ file[40:] }}</a><br>
                                 {% endfor %}
                             {% endif %}
                             </p>   
                             {% endfor %}
                         {% else %}
-                            {% for user in users[:100] %}
+                            {% for user in users[:50] %}
                             <hr>
-                            <h5 class="mt-2">{{ user.name }}</h5>
-                            <p>{{ user.email }}</p>
+                            <h3 class="mt-2">{{ user.name }}</h3>
+                            <p><i>User ID:</i> <strong>{{ user._id }}</strong><br>
+                            <i>Is account verified:</i> <strong>{{ user.verified }}</strong><br>
+                            <i>Email:</i> <strong>{{ user.email }}</strong><br>
+                            <i>Phone:</i> <strong>{{ user.phone }}</strong></p>
+                            <p><i>Address:</i><br>
+                            <strong>{{ user.address }}<br>
+                            {{ user.city }} {{ user.zipcode }}<br>
+                            {{ user.country }}</strong></p>
+                            <p><i>Current Position:</i> <strong>{{ user.current_job }}</strong><br>
+                            <strong>Files:</strong><br>             
                             {% if user.cv_file %}
                                 {% for file in user.cv_file %}
                                 <a href="/file/{{file}}" target="_blank">{{ file[40:] }}</a><br>
                                 {% endfor %}
                             {% endif %}
+                            </p>
                             {% endfor %}
                         {% endif %}
                         <div class="tab-bottom-spacing"></div>

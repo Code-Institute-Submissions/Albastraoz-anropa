@@ -205,10 +205,13 @@ def delete_file(del_file):
 @app.route('/search-user', methods=['POST'])
 def find_user():
     session['tab'] = 'users_tab'
-    search = request.form['search']
     one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
     all_users = mongo.db.users.find()
-    search_user = mongo.db.users.find({'email': search })
+
+    search = request.form['search']
+    mongo.db.users.create_index([("name", "text"), ("email", "text"), ("country", "text"), ("current_job", "text")], name='find_some_users', default_language='english')
+    search_user = mongo.db.users.find( { "$text": { "$search": search } } )
+
     return render_template("profile.html", tab=session['tab'], user=one_user, users=all_users, result=search_user)
 
 # Add vacancy
