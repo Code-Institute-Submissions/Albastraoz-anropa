@@ -149,18 +149,17 @@ def profile(user):
             mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
                 {'name' : request.form['name'], 
                 'phone' : request.form['phone'],
+                'current_job' : request.form['current_job'],
                 'address' : request.form['address'], 
                 'city' : request.form['city'], 
                 'zipcode' : request.form['zipcode'],
                 'country' : request.form['country']
             }})
             flash('Your information has been updated succesfully!')
-            return redirect(url_for('profile', user=session['_id']))
+            return redirect(url_for('profile', tab=session['tab'], user=session['_id']))
         # Check which form is used
-        elif 'current_job' in request.form:
+        else:
             session['tab'] = 'cv_tab'
-            mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$set":
-                {'current_job' : request.form['current_job']}})
             # Check if file is chosen
             if 'cv_file' in request.files:
                 cv_file = request.files['cv_file']
@@ -177,9 +176,9 @@ def profile(user):
                         mongo.db.users.update_one({'_id' : ObjectId(session['_id'])}, {"$push":
                         {'cv_file' : filenamegen}})
                         flash('Your file has been added to your profile.')
-                        return redirect(url_for('profile', user=session['_id']))
+                        return redirect(url_for('profile', tab=session['tab'], user=session['_id']))
                     flash('We only accept .png, .jpg, .jpeg, .gif, .pdf, .doc, .docx, .ppt, .pptx, .pps, .ppsx, .odt, .xls and .xlsx files.')
-            return redirect(url_for('profile', user=session['_id']))
+            return redirect(url_for('profile', tab=session['tab'], user=session['_id']))
     if session['_id'] is not None:
         one_user = mongo.db.users.find_one({'_id': ObjectId(session['_id'])})
         all_users = mongo.db.users.find()

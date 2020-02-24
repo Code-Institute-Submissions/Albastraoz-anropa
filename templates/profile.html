@@ -18,10 +18,10 @@
             </li>
             {% if tab == 'cv_tab' %}
             <li class="nav-item mr-auto">
-                <a class="nav-link active" data-toggle="tab" href="#cv_tab">CV</a>
+                <a class="nav-link active" data-toggle="tab" href="#cv_tab">Files</a>
                 {% else %}
             <li class="nav-item mr-auto">
-                <a class="nav-link" data-toggle="tab" href="#cv_tab">CV</a>
+                <a class="nav-link" data-toggle="tab" href="#cv_tab">Files</a>
                 {% endif %}
             </li>
             {% if user.admin %}
@@ -73,6 +73,11 @@
                             <label for="phone">Phone</label> - <i>Don't forget your country code!</i>
                             <input type="text" class="form-control" id="phone" name="phone"
                                 value="{{ user.phone }}" placeholder="eg +46 123456789">
+                        </div>
+                        <div class="form-group">
+                            <label for="current_job">Current Position</label>
+                            <input type="text" class="form-control" id="current_job" name="current_job"
+                                value="{{ user.current_job }}" placeholder="eg Mailman">
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
@@ -377,11 +382,6 @@
                         {% endwith %}
                         <form method="POST" action="{{ url_for('profile', user=session['_id'])}}"
                             enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="current_job">Current Position</label>
-                                <input type="text" class="form-control" id="current_job" name="current_job"
-                                    value="{{ user.current_job }}" placeholder="eg Mailman">
-                            </div>
                             {% if user.cv_file|length < 10 %}
                             <div class="form-group">
                                 <label for="cv_file">Upload files - <i>max 1MB</i></label>
@@ -390,10 +390,10 @@
                                     <label class="custom-file-label" for="cv_file">Choose file</label>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary">Add</button>
                             {% else %}
                             <p>You have uploaded the maximum number of 10 files, please remove one to upload a new file.</p>
                             {% endif %}
-                            <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                         {% if user.cv_file %}
                         <hr>

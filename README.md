@@ -5,9 +5,9 @@ The goal was to create a good looking website with easy to use tools for admin a
 Before I decided to accept this project I already created a logo and business card for the client.
 This gave me the advantage of that I already knew the colors and layout to use in the website.
 
-To get admin access to the website use the following login:
-email: admin@anropa.com
-password: anropaadmin
+To get admin access to the website use the following login:  
+email: admin@anropa.com  
+password: AnropaAdmin123
 
 Hosted on [Heroku](https://anropa-developmentsite.herokuapp.com/)
 Repository on [GitHub](https://github.com/Albastraoz/anropa)
@@ -228,6 +228,7 @@ All images direct location:
 Thank you to the following for inspiration, motivation and the direction I needed:
 
 - Seun Owonikoko    @seun_mentor
+- Anna Greaves      @anna_ci
 - Yung-Chin Huang
 - Code Institute
 - Google - your best friend
